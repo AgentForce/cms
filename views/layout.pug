@@ -1,0 +1,59 @@
+doctype html
+html(lang='')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title #{title} - CMS Manulife
+    meta(name='description', content='')
+    meta(name='theme-color' content='#4DA5F4')
+    meta(name='csrf-token', content=_csrf)
+    link(rel='shortcut icon', href='favicon.ico')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/css/font-awesome.css')
+    script(src='/js/Chart.js')
+    script(src='/js/jquery-1.11.1.min.js')
+    script(src='/js/modernizr.custom.js')
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic')
+    link(rel='stylesheet', href='/css/animate.css', type="text/css" media="all")
+    link(rel='stylesheet', href='/css/hover.css', type="text/css")
+    script(src='/js/wow.min.js')
+    script
+      new WOW().init();
+    script(src='/js/metisMenu.min.js')
+    script(src='/js/custom.js')
+    link(rel='stylesheet', href='/css/custom.css')
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/jquery.treegrid.css')
+    script(src='/js/jquery.treegrid.js')
+    script(src='/js/jquery.treegrid.bootstrap3.js')
+    script.
+      $(document).ready(function () {
+        $('.tree-2').treegrid({
+            expanderExpandedClass: 'glyphicon glyphicon-user',
+            expanderCollapsedClass: 'glyphicon glyphicon-road',
+            initialState: 'collapsed'
+        });
+      });
+  body.cbp-spmenu-push.cbp-spmenu-push-toright
+    .main-content
+      include partials/left
+      include partials/header
+      include partials/flash
+      block content
+
+      include partials/footer
+
+    script(src='/js/classie.js')
+    script(src='/js/scripts_2.js')
+    
+    script(src='/js/dev-loaders.js')
+    script(src='/js/dev-layout-default.js')
+    script(src='/js/jquery.marquee.js')
+    script(src='/js/jquery.jqcandlestick.min.js')
+    link(rel='stylesheet', href='/css/jqcandlestick.css')
+    script(src='/js/plugins.js')
+    script(src='/js/jquery.nicescroll.js')
+    script(src='/js/scripts.js')
+    script(src='/js/validator.min.js')

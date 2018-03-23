@@ -1,0 +1,113 @@
+extends ../layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 Users
+        .panel.panel-widget
+          .tables
+            .well
+              h4 Search
+              .form-control-wrapper
+                form(action="", method="post")
+                  .row
+                    .col-xs-12.col-sm-5
+                      label(for="") Keyword
+                      .form-group.has-error.has-feedback
+                        input(type="text" name="key" class="form-control" placeholder="Key" required)
+                    .col-xs-12.col-sm-4
+                      label(for="") Type
+                      .form-group.has-error.has-feedback
+                        select(name="type" id="type" class="form-control1")
+                          option(value='username') Username
+                          option(value='email') Email
+                          option(value='phone') Phone
+                    .col-xs-12.col-sm-3
+                      label(for="") 
+                      .form-group.has-error.has-feedback
+                        input(type="submit" value="Change").btn.btn-primary
+            table.table.table-bordered
+              thead
+                tr.info
+                  th Login
+                  th Info
+                  th Role & Resource
+                  th Report To
+                  th Status
+                  th Action
+                for user in users
+                  tr
+                    td
+                      p= user.username
+                      p= user.phone
+                      p 
+                        button(type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" + user.id) Change Phone
+                      div(id="myModal" + user.id class="modal fade" role="dialog")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button(type="button" class="close" data-dismiss="modal") &times;
+                              h4.modal-title Update Phone: 
+                                span= user.phone
+                            .modal-body
+                              form(action="/user/updatephone/" + user.id, method="post")
+                                label(for="phone") Thay đổi số điện thoại user phải send SMS OTP để xác nhận lại khi vào ứng dụng.
+                                .form-group
+                                  input(type="text" placeholder="New phone" name="phone" required="").form-control
+                                .form-group
+                                  input(type="hidden" value= user.username name="username" )
+                                .form-group
+                                  input(type="submit" value="Change").btn.btn-primary
+                                .modal-footer
+                                  button(type="button" class="btn btn-default" data-dismiss="modal") Close
+                    td
+                      p= user.fullName
+                      p= user.email
+                    td
+                      p= user.resource_ids
+                      p= user.scope
+                    td 
+                      p= "Report to " + user.report_to_username
+                      a(role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneReportTo" + user.id aria-expanded="true" aria-controls="collapseOne"  + user.id) Change Report To
+                      div(id="collapseOneReportTo" + user.id class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne")
+                        form(action="/user/uReport/" + user.id, method="post")
+                          .form-group
+                            input(type="text" placeholder="UserName" name="reportto" style="height:35px; margin-top: 5px" required="")
+                            input(type="hidden" value= user.username name="username" )
+                            input(type="submit" value="Change" style="margin-top: -4px").btn.btn-primary
+                    td
+                      - if(user.status > 0)
+                        a(href="http://")
+                          i.fa.fa-download.mail-icon
+                          - if(user.status === 0 ) var info = 'OTP';
+                          - if(user.status === 1 ) var info = 'Active';
+                          - if(user.status === 2 ) var info = 'DeActive';
+                          span= info
+                      - else
+                        i.fa.fa-download.mail-icon
+                        span OTP
+                    td
+                      p
+                        a(href="/user/edit/" + user.id).hvr-float-shadow Edit Scope
+                      p
+                        a(href="/user/edit/" + user.id).hvr-float-shadow Edit Info
+                      p
+                        a(href="http://").hvr-float-shadow Reset Password
+            nav
+              - var n = 1
+              ul.pagination.pagination
+                if page > 1
+                  li
+                    a(href="/user/" + page  aria-label="Previous")
+                      i.fa.fa-angle-left
+                while n < countpage + 1
+                  - var p = n++
+                  - var active = ""
+                  if page === p
+                    - active = "active"
+                  li(class = active)
+                    a(href="/user/" + p )= p
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")

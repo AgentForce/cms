@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 Manager Permissions
+        .forms-grids
+          .col-md-4
+            .panel.panel-widget
+              div(data-example-id="basic-forms").validation-grids.widget-shadow
+                .input-info
+                  h3 Add new
+                .form-body.form-body-info
+                  form(action="/permission", method="post", data-toggle="validator" novalidate="true")
+                    .form-group.valid-form
+                      input(type="text" class="form-control" id="scope" name="scope" placeholder="permission name" required="")
+                      span(class="glyphicon form-control-feedback" aria-hidden="true")
+                      span(class="help-block with-errors") Permission.
+                    .form-group.has-feedback
+                      input(type="text" class="form-control" id="name" name="name" placeholder="Description permission" data-error="Not null" required="")
+                      span(class="glyphicon form-control-feedback" aria-hidden="true")
+                      span(class="help-block with-errors") Description permission.
+                    .form-group
+                      .radio
+                        label(for="")
+                          input(type="radio" value="DATA_OAUTH" name="resource" required="") 
+                          span DATA OAUTH
+                      .radio
+                        label(for="")
+                          input(type="radio" value="SOP_API" name="resource" required="") 
+                          span SOP API
+                    .form-group
+                      button(type="submit" class="btn btn-primary disabled") Add
+          .col-md-8
+            .panel.panel-widget
+              .tables
+                table.table.table-bordered
+                  thead
+                    tr.info
+                      th Name & Description
+                      th Role
+                      th Resource
+                      th Action
+                    for role in roles 
+                      tr
+                        td
+                          p= role[0].scope
+                          p= role[0].name
+                        td
+                          a(href="link/" + role[0].id style="margin-bottom:10px; margin-left:10px").btn.btn-info Add Role
+                          if role.length > 1
+                            for child in role
+                              span(style="margin-bottom:10px; margin-left:10px").btn.btn-default= child.name_scope + ' (' + child.scope + ')'
+                              
+                        td= role[0].resource
+                        td Edit
+              nav
+              - var n = 1
+              ul.pagination.pagination
+                if page > 1
+                  li
+                    a(href="/permission/" + page  aria-label="Previous")
+                      i.fa.fa-angle-left
+                while n < countpage + 1
+                  - var p = n++
+                  - var active = ""
+                  if page === p
+                    - active = "active"
+                  li(class = active)
+                    a(href="/permission/" + p )= p

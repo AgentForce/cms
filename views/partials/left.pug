@@ -1,0 +1,29 @@
+div.sidebar(role="navigation")
+    .navbar-collapse
+        nav(class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right dev-page-sidebar mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar cbp-spmenu-open" id="cbp-spmenu-s1")
+            .scrollbar.scrollbar1
+                ul(id="side-menu").nav
+                    li
+                        a(href="/")
+                            i.fa.fa-home.nav_icon
+                            span Dashboard
+                    li.active
+                        a(href="#").active
+                            i.fa.fa-cogs.nav_icon
+                            span Users
+                            span.fa.arrow
+                        ul.nav.nav-second-level
+                            li
+                                a(href="/user/1") Manager Users
+                            li
+                                a(href="/user/add") Add new
+                    li.active
+                        a(href="#").active
+                            i.fa.fa-cogs.nav_icon
+                            span Role & Permission
+                            span.fa.arrow
+                        ul.nav.nav-second-level
+                            li
+                                a(href="/role/1") Manager Role
+                            li
+                                a(href="/permission/1") Manager Permissions

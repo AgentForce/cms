@@ -1,0 +1,38 @@
+.sticky-header.header-section
+  .header-left
+    .logo
+      a(href="http://")
+        ul
+          li
+            img(src="/images/logo1.png", alt="")
+          li
+            h1 CMS Demo
+          .clearfix
+    .header-right.header-right-grid
+      .profile_details_left
+  .header-right
+    .profile_details
+      ul
+        li.dropdown.profile_details_drop
+          a(href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false")
+            .profile_img
+              span.prfil-img
+                img(src="/images/a.png", alt="")
+              .clearfix
+          ul.dropdown-menu.drp-mnu
+            li
+              a(href="/account")
+                i.fa.fa-cog
+                span Settings
+            li
+              a(href="/account")
+                i.fa.fa-user
+                span user.access_token
+            li
+              a(href="/logout")
+                i.fa.fa-sign-out
+                span Logout
+    button(id="showLeftPush")
+      i.fa.fa-bars
+    .clearfix
+  .clearfix

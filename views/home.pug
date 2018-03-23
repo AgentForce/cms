@@ -1,0 +1,108 @@
+extends layout
+
+block content
+  div(id="page-wrapper")
+    .main-page
+      .row.four-grids
+        .col-md-4.ticket-grid
+          .tickets
+            .grid-left
+              .book-icon
+                i.fa.fa-book
+            .grid-right
+              h3 Answered
+                span Answered
+              p 452
+            .clearfix
+        .col-md-4.ticket-grid
+          .tickets
+            .grid-left
+              .book-icon
+                i.fa.fa-rocket
+            .grid-right
+              h3 Answered
+                span Answered
+              p 452
+            .clearfix
+        .col-md-4.ticket-grid
+          .tickets
+            .grid-left
+              .book-icon
+                i.fa.fa-user
+            .grid-right
+              h3 Answered
+                span Answered
+              p 452
+            .clearfix
+      .row
+        .col-md-5.program-grid
+          .panel.panel-widget
+            .panel-title
+              span Monthly
+            .chart-skills
+              .skills-holder(id="canvas-holder")
+                canvas(id="chart-area" width="500" height="500")
+        .col-md-7.monthly-grid
+          .panel.panel-widget
+            .panel-title
+              span Tree View
+            .panel-body
+              table(class="table tree-2 table-bordered table-striped table-condensed")
+                tr.treegrid-1.info
+                  td
+                    span(style="margin-left: 20px") Nguyễn Văn A
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-2.treegrid-parent-1
+                  td
+                    span(style="margin-left: 20px") Nguyễn Văn A
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-3.treegrid-parent-1
+                  td Root 1
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-4.treegrid-parent-2
+                  td Root 1
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-5.info
+                  td
+                    span(style="margin-left: 20px") Nguyễn Văn A
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-6.treegrid-parent-1
+                  td Root 1
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-7.treegrid-parent-5
+                  td Root 1
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+                tr.treegrid-8.treegrid-parent-2
+                  td Root 1
+                  td.hidden-xs Col 1
+                  td.hidden-xs.hidden-sm Col 2
+  script(src='/js/Chart.Core.js')
+  script(src='/js/Chart.Doughnut.js')
+  script.
+    var doughnutData = [
+      {
+        value: 2,
+        label: "One",
+        color: "#99CC00"
+      },
+      {
+        value: 6,
+        label: "Twp",
+        color: "#FF3300"
+      },
+      {
+        value: 10,
+        label: "Three",
+        color: "#944DDB"
+      }];
+    window.onload = function () {
+      var ctx = document.getElementById("chart-area").getContext("2d");
+      window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, { responsive: true });
+    };

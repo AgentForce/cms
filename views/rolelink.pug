@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 Linking Permission
+        .forms-grids
+          .col-md-5
+            .panel.panel-widget
+              div(data-example-id="basic-forms").validation-grids.widget-shadow
+                .input-info
+                  h3 Permission
+                .form-body.form-body-info
+                  form(action="", method="post", data-toggle="validator" novalidate="true")
+                    for permission in permissions
+                      .checkbox
+                        label(for="1" style="margin-bottom: 10px")
+                          input(type="checkbox" name="arrPermission" id=permission.id  value=permission.id style="font-size: 16px")
+                          span(style="font-size: 18px")= permission.scope + "(" + permission.name + ")"
+                    .form-group
+                      button(type="submit" class="btn btn-primary disabled") Link
+          .col-md-7
+            .panel.panel-widget
+              .input-info
+                .graph-right
+                  h4= "Group : " + role.role
+                  p= role.name
+                  ul
+                    li
+                      span= "Resource: " + role.resource
+                    li
+                      span= "Status: " + role.is_default
+                    li Member: 34 users
+              .tables
+                table.table.table-bordered
+                  thead
+                    tr.info
+                      th Name
+                      th Description
+                      th Action
+                    for role in roles 
+                      tr
+                        td
+                          p= role[0].role
+                        td= role[0].name
+                        td Delete

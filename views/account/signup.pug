@@ -1,0 +1,127 @@
+extends ../layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 New User
+        include ../partials/flash
+        .panel.panel-widget.forms-panel
+          form(method="post").form-horizontal
+            .form
+              div(class="form-grids widget-shadow" data-example-id="basic-forms")
+                .form-title
+                  h4 Information Login
+                .form-body
+                  .form-group
+                    label(for="username" class="col-sm-2 control-label") Username
+                    .col-sm-8
+                      input(type="text" data-toggle="validator" data-minlength="3" class="form-control" name="username" id="username" placeholder="Username" required="")
+                      span.help-block Minimum of 3 characters
+                  .form-group
+                    label(for="phone" class="col-sm-2 control-label") Phone
+                    .col-sm-8
+                      input(type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" required="")
+                  .form-group
+                    label(for="reportTo" class="col-sm-2 control-label") Report to
+                    .col-sm-8
+                      input(type="text" class="form-control" id="report_to" name="report_to" placeholder="report To" required="")
+              .clearfix
+              div(data-example-id="basic-forms")
+                .form-title
+                  h4 Role
+                for resource in arrResource
+                  .inbox-page(style="margin: 30px")
+                    input(style="float: left; margin:7px; margin-left: 150px; margin-right: 20px" value= resource name="resource_ids" type="checkbox" class="checkbox" required="")
+                    h4(style="float: left; color: #fd5c63 !important;")= resource
+                    .clearfix
+                    for scope in arrScope[resource]
+                      div(class="inbox-row widget-shadow" style="margin-left: 200px; margin-right: 210px" id="accordion" role="tablist" aria-multiselectable="true")
+                        .mail
+                          input(type="checkbox" value= scope.role name= "scope" class="checkbox")
+                        .mail.mail-name
+                          h6= scope.role
+                        .mail
+                          p= scope.name
+                        .clearfix
+              .form
+              div(class="form-grids widget-shadow" data-example-id="basic-forms")
+                .form-title
+                  h4 Information User
+                .form-body
+                  .form-group
+                    label(for="email" class="col-sm-2 control-label") Email
+                    .col-sm-8
+                      input(type="email" class="form-control1" id="email" name="email" placeholder="Email" data-error="Bruh, that email address is invalid" required="")
+                  .form-group
+                    label(for="FullName" class="col-sm-2 control-label") FullName
+                    .col-sm-8
+                      input(class="form-control1" id="fullName" name="fullName" placeholder="Address")
+                  .form-group
+                    label(for="radio" class="col-sm-2 control-label") Gender
+                    .col-sm-8
+                      .radio-inline
+                        label
+                          input(type="radio", value=1 name="gender")
+                          span Male
+                      .radio-inline
+                        label
+                          input(type="radio", value=0 name="gender")
+                          span FeMale
+                  .form-group
+                    label(for="birthday" class="col-sm-2 control-label") Birthday
+                    .col-sm-8
+                      input(class="form-control1" name="birthday" id="birthday" placeholder="2018-03-01 16:25:11")
+                  .form-group
+                    label(for="city" class="col-sm-2 control-label") City
+                    .col-sm-8
+                      select(name="city" id="city" class="form-control1")
+                        option(value=1) Hồ Chí Minh
+                        option(value=2) Hà Nội
+                        option(value=3) Đà Nẵng
+                  .form-group
+                    label(for="district" class="col-sm-2 control-label") District
+                    .col-sm-8
+                      select(name="district" id="district" class="form-control1")
+                        option(value=1) Quận 7
+                        option(value=2) Quận 1
+                        option(value=3) Quận 2
+                        option(value=4) Quận 3
+                        option(value=5) Quận 4
+                  .form-group
+                    label(for="address" class="col-sm-2 control-label") Address
+                    .col-sm-8
+                      input(class="form-control1" id="address" name="address" placeholder="Address")
+            .form
+              div(class="form-grids widget-shadow" data-example-id="basic-forms")
+                .form-title
+                  h4 Other
+                .form-body
+                  .form-group
+                    label(for="level" class="col-sm-2 control-label") Level
+                    .col-sm-8
+                      input(class="form-control1" name="level" id="level" placeholder="Address")
+                  .form-group
+                    label(for="expirence" class="col-sm-2 control-label") Expirence
+                    .col-sm-8
+                      input(class="form-control1" id="expirence" name="expirence" placeholder="2018-03-01 16:25:11")
+                  .form-group
+                    label(for="badge" class="col-sm-2 control-label") Badge
+                    .col-sm-8
+                      select(name="badge" id="badge" class="form-control1")
+                        option(value='bag1') Badge 1
+                        option(value='bag12') Badge2
+                        option(value='bag13') Badge 3
+                        option(value='bag14') Badge 4
+                        option(value='bag15') Badge 5
+                  .form-group
+                    label(for="zone" class="col-sm-2 control-label") Zone
+                    .col-sm-8
+                      input(class="form-control1" id="zone" name="zone" placeholder="Zone")
+                  .form-group
+                    label(for="code_level" class="col-sm-2 control-label") Code Level
+                    .col-sm-8
+                      input(class="form-control1" id="code_level" name="code_level" placeholder="Level")
+                  .col-sm-offset-2
+                    button(type="submit" class="btn btn-danger") Add New
