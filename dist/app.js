@@ -17,6 +17,8 @@ const bluebird = require("bluebird");
 const MongoStore = mongo(session);
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env.example" });
+console.log(process.env.MONGOLAB_URI);
+console.log("=======");
 // Controllers (route handlers)
 const homeController = require("./controllers/home");
 const userController = require("./controllers/user");

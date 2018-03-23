@@ -17,7 +17,8 @@ const MongoStore = mongo(session);
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env.example" });
-
+console.log(process.env.MONGOLAB_URI);
+console.log("=======");
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
@@ -27,6 +28,7 @@ import * as roleController from "./controllers/role";
 import * as permissionController from "./controllers/permission";
 // API keys and Passport configuration
 import * as passportConfig from "./config/passport";
+import { constants } from "fs";
 
 // Create Express server
 const app = express();
