@@ -103,7 +103,7 @@ exports.getSignup = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         // Call API get Scope
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiGet("token", process.env.DATA_OAUTH_URI + "api/roles");
+        const res_api = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
         const arrScope = _.groupBy(res_api, "resource");
         const arrResource = (Object.keys(arrScope));
         // console.log(result[abc[0]]);
@@ -145,7 +145,7 @@ exports.postSignup = (req, res, next) => __awaiter(this, void 0, void 0, functio
         console.log(datapost);
         // Call API add
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/users/add", datapost);
+        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/add", datapost);
         console.log(res_api);
         /*res.render("account/signup", {
           title: "Create Account",
@@ -186,9 +186,9 @@ exports.postSignup = (req, res, next) => __awaiter(this, void 0, void 0, functio
  */
 exports.getUpdateUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
-        // Call API get Scope 
+        // Call API get Scope
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiGet("token", process.env.DATA_OAUTH_URI + "api/roles");
+        const res_api = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
         const arrScope = _.groupBy(res_api, "resource");
         const arrResource = (Object.keys(arrScope));
         // console.log(result[abc[0]]);
@@ -212,7 +212,7 @@ exports.postUpdatePhone = (req, res, next) => __awaiter(this, void 0, void 0, fu
         console.log(errors);
         if (errors) {
             req.flash("errors", errors);
-            return res.redirect("/user");
+            return res.redirect("/user/1");
         }
         const datapost = { phone: req.body.phone };
         console.log(datapost);
@@ -220,7 +220,7 @@ exports.postUpdatePhone = (req, res, next) => __awaiter(this, void 0, void 0, fu
         const api = new api_1.BaseApi();
         const res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/updatePhone/" + req.body.username, datapost);
         console.log(res_api);
-        return res.redirect("/user");
+        return res.redirect("/user/1");
     }
     catch (error) {
         const handler = new handler_1.HandlerApi();
@@ -242,7 +242,7 @@ exports.postAllUsers = (req, res) => __awaiter(this, void 0, void 0, function* (
         // req.params.page = 1;
         // req.params.size = 5;
         let res_api;
-        res_api = yield api.apiPost(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/" + req.params.page + "/" + size, req.body);
+        res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/" + req.params.page + "/" + size, req.body);
         if (res_api.total > 0) {
             countpage = res_api.total / size;
         }

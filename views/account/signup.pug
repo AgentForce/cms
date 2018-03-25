@@ -33,7 +33,7 @@ block content
                   h4 Role
                 for resource in arrResource
                   .inbox-page(style="margin: 30px")
-                    input(style="float: left; margin:7px; margin-left: 150px; margin-right: 20px" value= resource name="resource_ids" type="checkbox" class="checkbox" required="")
+                    input(style="float: left; margin:7px; margin-left: 150px; margin-right: 20px" value= resource name="resource_ids" type="checkbox" class="checkbox")
                     h4(style="float: left; color: #fd5c63 !important;")= resource
                     .clearfix
                     for scope in arrScope[resource]

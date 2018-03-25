@@ -60,7 +60,7 @@ export let postPermission = async(req: Request, res: Response) => {
     }
     // Call API add
     const api = new BaseApi();
-    const res_api = await api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/permissions", datapost);
+    const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/permissions", datapost);
     console.log(res_api);
     /*res.render("account/signup", {
       title: "Create Account",
@@ -71,6 +71,7 @@ export let postPermission = async(req: Request, res: Response) => {
   } catch (error) {
     const handler = new HandlerApi();
     handler.handlerError(error);
+    return res.redirect("/permission/1");
   }
 
 };

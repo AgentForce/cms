@@ -93,7 +93,7 @@ exports.postRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
         }
         // Call API add
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/roles", datapost);
+        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles", datapost);
         console.log(res_api);
         /*res.render("account/signup", {
           title: "Create Account",
@@ -120,7 +120,7 @@ exports.postLinkRole = (req, res) => __awaiter(this, void 0, void 0, function* (
         }
         // Call API add
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiPostJson("token", process.env.DATA_OAUTH_URI + "/api/roles/link/" + req.params.idrole, datapost);
+        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "/api/roles/link/" + req.params.idrole, datapost);
         console.log(res_api);
         /*res.render("account/signup", {
           title: "Create Account",

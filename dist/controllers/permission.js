@@ -69,7 +69,7 @@ exports.postPermission = (req, res) => __awaiter(this, void 0, void 0, function*
         }
         // Call API add
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/permissions", datapost);
+        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/permissions", datapost);
         console.log(res_api);
         /*res.render("account/signup", {
           title: "Create Account",
@@ -81,6 +81,7 @@ exports.postPermission = (req, res) => __awaiter(this, void 0, void 0, function*
     catch (error) {
         const handler = new handler_1.HandlerApi();
         handler.handlerError(error);
+        return res.redirect("/permission/1");
     }
 });
 //# sourceMappingURL=permission.js.map

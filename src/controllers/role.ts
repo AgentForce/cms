@@ -84,7 +84,7 @@ export let postRole = async(req: Request, res: Response) => {
     }
     // Call API add
     const api = new BaseApi();
-    const res_api = await api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/roles", datapost);
+    const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles", datapost);
     console.log(res_api);
     /*res.render("account/signup", {
       title: "Create Account",
@@ -112,7 +112,7 @@ export let postLinkRole = async(req: Request, res: Response) => {
     }
     // Call API add
     const api = new BaseApi();
-    const res_api = await api.apiPostJson("token", process.env.DATA_OAUTH_URI + "/api/roles/link/" + req.params.idrole, datapost);
+    const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "/api/roles/link/" + req.params.idrole, datapost);
     console.log(res_api);
     /*res.render("account/signup", {
       title: "Create Account",

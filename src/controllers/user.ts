@@ -97,7 +97,7 @@ export let getSignup = async (req: Request, res: Response) => {
   try {
     // Call API get Scope
     const api = new BaseApi();
-    const res_api = await api.apiGet("token", process.env.DATA_OAUTH_URI + "api/roles");
+    const res_api = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
     const arrScope = _.groupBy(res_api, "resource");
     const arrResource = (Object.keys(arrScope));
     // console.log(result[abc[0]]);
@@ -139,7 +139,7 @@ export let postSignup = async (req: Request, res: Response, next: NextFunction) 
     console.log(datapost);
     // Call API add
     const api = new BaseApi();
-    const res_api = await api.apiPostJson("token", process.env.DATA_OAUTH_URI + "api/users/add", datapost);
+    const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/add", datapost);
     console.log(res_api);
     /*res.render("account/signup", {
       title: "Create Account",
@@ -180,9 +180,9 @@ export let postSignup = async (req: Request, res: Response, next: NextFunction) 
  */
  export let getUpdateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Call API get Scope 
+    // Call API get Scope
     const api = new BaseApi();
-    const res_api = await api.apiGet("token", process.env.DATA_OAUTH_URI + "api/roles");
+    const res_api = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
     const arrScope = _.groupBy(res_api, "resource");
     const arrResource = (Object.keys(arrScope));
     // console.log(result[abc[0]]);
@@ -207,7 +207,7 @@ export let postUpdatePhone = async (req: Request, res: Response, next: NextFunct
     console.log(errors);
     if (errors) {
       req.flash("errors", errors);
-      return res.redirect("/user");
+      return res.redirect("/user/1");
     }
     const datapost = {phone : req.body.phone};
     console.log(datapost);
@@ -215,7 +215,7 @@ export let postUpdatePhone = async (req: Request, res: Response, next: NextFunct
     const api = new BaseApi();
     const res_api = await api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/updatePhone/" + req.body.username, datapost);
     console.log(res_api);
-    return res.redirect("/user");
+    return res.redirect("/user/1");
 
   } catch (error) {
     const handler = new HandlerApi();
@@ -237,7 +237,7 @@ export let postAllUsers = async (req: Request, res: Response) => {
     // req.params.page = 1;
     // req.params.size = 5;
     let res_api: any;
-    res_api = await api.apiPost(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/" + req.params.page + "/" + size, req.body);
+    res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/" + req.params.page + "/" + size, req.body);
     if (res_api.total > 0 ) {
       countpage = res_api.total / size;
     } else {

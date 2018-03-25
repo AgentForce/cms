@@ -51,7 +51,7 @@ export class BaseApi {
                     timeout: 60000,
                     noDelay: true,
                     keepAlive: true,
-                    keepAliveDelay: 1000
+                    keepAliveDelay: 5000
                 },
                 responseConfig: {
                     timeout: 300000
@@ -124,10 +124,10 @@ export class BaseApi {
                     timeout: 10000, // request timeout in milliseconds
                     noDelay: true, // Enable/disable the Nagle algorithm
                     keepAlive: true, // Enable/disable keep-alive functionalityidle socket.
-                    keepAliveDelay: 1000 // and optionally set the initial delay before the first keepalive probe is sent
+                    keepAliveDelay: 5000 // and optionally set the initial delay before the first keepalive probe is sent
                 },
                 responseConfig: {
-                    timeout: 1000 // response timeout
+                    timeout: 5000 // response timeout
                 }
             };
             const req = client.post(api_name, args, function (data: Object, response: any) {                // parsed response body as js object
@@ -177,7 +177,7 @@ export class BaseApi {
                     timeout: 60000,
                     noDelay: true,
                     keepAlive: true,
-                    keepAliveDelay: 1000
+                    keepAliveDelay: 5000
                 },
                 responseConfig: {
                     timeout: 300000
@@ -270,7 +270,7 @@ export class BaseApi {
                     timeout: 60000,
                     noDelay: true,
                     keepAlive: true,
-                    keepAliveDelay: 1000
+                    keepAliveDelay: 5000
                 },
                 responseConfig: {
                     timeout: 300000
