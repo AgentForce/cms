@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Customize
 const api_1 = require("../services/api");
 const handler_1 = require("../services/handler");
+const lodash = require("lodash");
 /**
  * GET /role
  * Contact form page.
@@ -21,6 +22,7 @@ exports.getRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
         let countpage;
         countpage = 0;
         const api = new api_1.BaseApi();
+        console.log(req.params);
         if (req.params.page < 0)
             req.params.page = 0;
         const size = 8;
@@ -53,17 +55,20 @@ exports.getRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
 exports.getLinkRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
     // tslint:disable-next-line:no-trailing-whitespace
     try {
+        console.log("kanet");
+        console.log(req.params);
         const api = new api_1.BaseApi();
         let res_api;
         let res_role;
-        console.log(req.params.idrole);
         res_api = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/permissions");
-        res_role = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles/obj/" + req.params.idrole);
-        console.log(res_role);
+        res_role = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles/obj/" + req.params.id);
+        const rolesub = lodash.differenceBy(res_api, res_role.permissions, "scope");
+        console.log("==========" + req.params.id);
+        console.log(res_role.permissions);
         // api/permissions/obj
         res.render("rolelink", {
             title: "Role Link",
-            permissions: res_api,
+            permissions: rolesub,
             role: res_role.role,
             scopes: res_role.permissions,
             roles: []
@@ -110,18 +115,44 @@ exports.postRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
 exports.postLinkRole = (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         req.assert("arrPermission", "Permission is not valid").notEmpty();
-        const datapost = req.body;
-        datapost.is_default = true;
+        const datapost = req.body.arrPermission;
+        // datapost.is_default = true;
         const errors = req.validationErrors();
         console.log(errors);
         if (errors) {
             req.flash("errors", errors);
             return res.redirect("/role/link/" + req.params.idrole);
         }
+        console.log(datapost);
+        // tslint:disable-next-line:prefer-const
+        let data_post = [];
+        if (typeof datapost === "string") {
+            const arrSplit = datapost.split("||");
+            const obj = {
+                id: arrSplit[0],
+                scope: arrSplit[1],
+                name_scope: arrSplit[2]
+            };
+            data_post.push(obj);
+        }
+        else {
+            for (let index = 0; index < datapost.length; index++) {
+                const element = datapost[index];
+                const arrSplit = element.split("||");
+                const obj = {
+                    id: arrSplit[0],
+                    scope: arrSplit[1],
+                    name_scope: arrSplit[2]
+                };
+                data_post.push(obj);
+            }
+        }
+        console.log(data_post);
         // Call API add
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "/api/roles/link/" + req.params.idrole, datapost);
+        const res_api = yield api.apiPutJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles/link/" + req.params.idrole, data_post);
         console.log(res_api);
+        //  id_scope: element.id, name_scope: element.name_scope, scope: element.scope
         /*res.render("account/signup", {
           title: "Create Account",
           arrResource: [],

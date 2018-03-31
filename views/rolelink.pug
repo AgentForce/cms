@@ -15,10 +15,11 @@ block content
                 .form-body.form-body-info
                   form(action="", method="post", data-toggle="validator" novalidate="true")
                     for permission in permissions
-                      .checkbox
-                        label(for="1" style="margin-bottom: 10px")
-                          input(type="checkbox" name="arrPermission" id=permission.id  value=permission.id style="font-size: 16px")
-                          span(style="font-size: 18px")= permission.scope + "(" + permission.name + ")"
+                      if role.resource === permission.resource
+                        .checkbox
+                          label(for="1" style="margin-bottom: 10px")
+                            input(type="checkbox" name="arrPermission" id=permission.id  value=permission.id + "||" + permission.scope + "||" + permission.name  style="font-size: 16px")
+                            span(style="font-size: 18px")= permission.scope + "(" + permission.name + ")"
                     .form-group
                       button(type="submit" class="btn btn-primary disabled") Link
           .col-md-7
@@ -32,7 +33,7 @@ block content
                       span= "Resource: " + role.resource
                     li
                       span= "Status: " + role.is_default
-                    li Member: 34 users
+                    li Member: updating
               .tables
                 table.table.table-bordered
                   thead
@@ -40,9 +41,9 @@ block content
                       th Name
                       th Description
                       th Action
-                    for role in roles 
+                    for role in scopes 
                       tr
                         td
-                          p= role[0].role
-                        td= role[0].name
+                          p= role.scope
+                        td= role.name_scope
                         td Delete

@@ -27,7 +27,7 @@ block content
                     .col-xs-12.col-sm-3
                       label(for="") 
                       .form-group.has-error.has-feedback
-                        input(type="submit" value="Change").btn.btn-primary
+                        input(type="submit" value="Search").btn.btn-primary
             table.table.table-bordered
               thead
                 tr.info
@@ -93,8 +93,25 @@ block content
                         a(href="/user/edit/" + user.id).hvr-float-shadow Edit Scope
                       p
                         a(href="/user/edit/" + user.id).hvr-float-shadow Edit Info
-                      p
-                        a(href="http://").hvr-float-shadow Reset Password
+                      p 
+                        button(type="button" class="btn btn-info" data-toggle="modal" data-target="#resetpass" + user.id) Reset Password
+                      div(id="resetpass" + user.id class="modal fade" role="dialog")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button(type="button" class="close" data-dismiss="modal") &times;
+                              h4.modal-title Reset Password: 
+                                span= user.username + " - " + user.fullName
+                            .modal-body
+                              form(action="/user/resetPass", method="post")
+                                label(for="phone") Reset mật khẩu user phải send SMS OTP để xác nhận lại khi vào ứng dụng.
+                                .form-group
+                                  span Bạn có chắc muốn reset mật khẩu không?
+                                .form-group
+                                  input(type="hidden" value= user.username name="username" )
+                                .modal-footer
+                                  input(type="submit" value="Reset").btn.btn-primary
+                                  button(type="button" class="btn btn-default" data-dismiss="modal") Close
             nav
               - var n = 1
               ul.pagination.pagination

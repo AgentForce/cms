@@ -4,6 +4,7 @@ import * as Promise from "bluebird";
 const lodash = require("lodash");
 // const uncompress = require('compress-buffer').uncompress;
 const StringDecoder = require("string_decoder").StringDecoder;
+const xlsxtojson = require("xlsx-to-json-lc");
 
 
 /**
@@ -194,13 +195,13 @@ export class BaseApi {
                 },
                 data: JSON.stringify(datapost),
                 requestConfig: {
-                    timeout: 10000, // request timeout in milliseconds
+                    timeout: 300000, // request timeout in milliseconds
                     noDelay: true, // Enable/disable the Nagle algorithm
                     keepAlive: true, // Enable/disable keep-alive functionalityidle socket.
-                    keepAliveDelay: 1000 // and optionally set the initial delay before the first keepalive probe is sent
+                    keepAliveDelay: 300000 // and optionally set the initial delay before the first keepalive probe is sent
                 },
                 responseConfig: {
-                    timeout: 1000 // response timeout
+                    timeout: 300000 // response timeout
                 }
             };
             console.log(api_name);
@@ -237,28 +238,8 @@ export class BaseApi {
         });
     }
 
-    public apiPostJson(token: string, api_name: string, datapost: any) {
+    public apiPutJson(token: string, api_name: string, datapost: any) {
         return new Promise(function (fulfill, reject) {
-            /*console.log("++++");
-            console.log((datapostLink));
-            console.log("+++444+");
-            const datapost = {
-                "username": datapostLink.username,
-                "phone": datapostLink.phone,
-                "fullName": datapostLink.fullName,
-                "scope": datapostLink.scope,
-                "resource_ids" : datapostLink.resource_ids,
-                "address": datapostLink.address,
-                "city": datapostLink.city,
-                "district": datapostLink.district,
-                "gender": datapostLink.gender,
-                "birthday": datapostLink.birthday,
-                "level": datapostLink.level,
-                "expirence": "datapostLink.expirence",
-                "email": datapostLink.email,
-                "code_level": datapostLink.code_level,
-              };
-            console.log(datapost);*/
             const options = {
                 connection: {
                     rejectUnauthorized: false,
@@ -296,6 +277,117 @@ export class BaseApi {
                     timeout: 1000 // response timeout
                 }
             };
+             const req = client.put(api_name, args, function (data: Object, response: any) {                // parsed response body as js object
+                console.log("response=======================");
+                console.log(data);
+                if (response.statusCode >= 200 && response.statusCode < 300)
+                    fulfill(data);
+                else {
+                    const decoder = new StringDecoder("utf8");
+                    reject("Server response statusCode: " + response.statusCode + " Data : " + decoder.write(data));
+                }
+
+            });
+
+            req.on("requestTimeout", function (req: any) {
+                reject(" - request has expired :");
+                req.abort();
+            });
+
+            req.on("responseTimeout", function (res: any) {
+                reject(" - response has expired :");
+            });
+
+            // it's usefull to handle request errors to avoid, for example, socket hang up errors on request timeouts
+            req.on("error", function (err: any) {
+                console.log("error");
+                // Xóa data tenant
+                reject(err);
+
+            });
+
+
+        });
+    }
+
+    public getExcelJson(path: any) {
+        return new Promise(function (fulfill, reject) {
+            const exceltojson = xlsxtojson;
+            exceltojson({
+                input: path, // the same path where we uploaded our file
+                // tslint:disable-next-line:no-null-keyword
+                output: null, // since we don't need output.json
+                lowerCaseHeaders: true
+            }, function (err: any, result: any) {
+                if (err) {
+                    // return res.json({error_code: 1, err_desc: err, data: ""});
+                    console.log(err);
+                }
+                fulfill(result);
+                // res.json({error_code: 0, err_desc: "", data: result});
+            });
+        });
+    }
+
+    public apiPostJson(token: string, api_name: string, datapost: any) {
+        return new Promise(function (fulfill, reject) {
+            /*console.log("++++");
+            console.log((datapostLink));
+            console.log("+++444+");
+            const datapost = {
+                "username": datapostLink.username,
+                "phone": datapostLink.phone,
+                "fullName": datapostLink.fullName,
+                "scope": datapostLink.scope,
+                "resource_ids" : datapostLink.resource_ids,
+                "address": datapostLink.address,
+                "city": datapostLink.city,
+                "district": datapostLink.district,
+                "gender": datapostLink.gender,
+                "birthday": datapostLink.birthday,
+                "level": datapostLink.level,
+                "expirence": "datapostLink.expirence",
+                "email": datapostLink.email,
+                "code_level": datapostLink.code_level,
+              };
+            console.log(datapost);*/
+            const options = {
+                connection: {
+                    rejectUnauthorized: false,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                },
+                requestConfig: {
+                    timeout: 6000000,
+                    noDelay: true,
+                    keepAlive: true,
+                    keepAliveDelay: 6000000
+                },
+                responseConfig: {
+                    timeout: 6000000
+                }
+            };
+            const client = new Client(options);
+            // Data test
+            // request and response additional configuration
+
+            const args = {
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Accept": "application/json",
+                },
+                data: JSON.stringify(datapost),
+                requestConfig: {
+                    timeout: 6000000, // request timeout in milliseconds
+                    noDelay: true, // Enable/disable the Nagle algorithm
+                    keepAlive: true, // Enable/disable keep-alive functionalityidle socket.
+                    keepAliveDelay: 6000000 // and optionally set the initial delay before the first keepalive probe is sent
+                },
+                responseConfig: {
+                    timeout: 6000000 // response timeout
+                }
+            };
             console.log(api_name);
             const req = client.post(api_name, args, function (data: Object, response: any) {                // parsed response body as js object
                 console.log("response=======================");
@@ -310,7 +402,7 @@ export class BaseApi {
             });
 
             req.on("requestTimeout", function (req: any) {
-                reject(" - request has expired :");
+                reject(" - request has expired Post JSon:");
                 req.abort();
             });
 

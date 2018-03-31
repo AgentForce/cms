@@ -112,6 +112,42 @@ export let getSignup = async (req: Request, res: Response) => {
   }
 };
 
+export let addExcel = async (req: Request, res: Response) => {
+  try {
+    /**/
+    // Call API get Scope
+    const api = new BaseApi();
+    const res_api = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
+    const arrScope = _.groupBy(res_api, "resource");
+    const arrResource = (Object.keys(arrScope));
+    // console.log(result[abc[0]]);
+    res.render("account/addexcel", {
+      title: "Create Account Excel",
+      arrUsers: []
+    });
+  } catch (error) {
+    const handler = new HandlerApi();
+    handler.handlerError(error);
+  }
+};
+
+export let postAddExcel = async (req: any, res: Response) => {
+  try {
+    // console.log(req.file);
+    const api = new BaseApi();
+    const resExcel = await api.getExcelJson(req.file.path);
+    const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/addList", resExcel);
+    // console.log(result);
+    await res.render("account/addexcel", {
+      title: "Create Account Excel",
+      arrUsers: res_api
+    });
+
+  } catch (error) {
+    const handler = new HandlerApi();
+    handler.handlerError(error);
+  }
+};
 /**
  * POST /signup
  * Create a new local account.
@@ -198,6 +234,30 @@ export let postSignup = async (req: Request, res: Response, next: NextFunction) 
 };
 
 
+export let patchResetPass = async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.body);
+  try {
+    req.assert("username", "Username is not valid").notEmpty();
+    const errors = req.validationErrors();
+    // console.log(errors);
+    if (errors) {
+      req.flash("errors", errors);
+      return res.redirect("/user/1");
+    }
+    // const datapost = {phone : req.body.phone};
+    // console.log(datapost);
+    // Call API add
+    const api = new BaseApi();
+    const res_api = await api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/resetPass/" + req.body.username, []);
+    console.log(res_api);
+    return res.redirect("/user/1");
+
+  } catch (error) {
+    const handler = new HandlerApi();
+    handler.handlerError(error);
+  }
+};
+
 export let postUpdatePhone = async (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body);
   try {
@@ -262,9 +322,10 @@ export let getAllUsers = async (req: Request, res: Response) => {
   try {
     let countpage: number;
     countpage = 0;
+    console.log(req.params);
     const api = new BaseApi();
     if (req.params.page < 0 ) req.params.page = 0;
-    const size = 8;
+    const size = 30;
     // req.params.page = 1;
     // req.params.size = 5;
     let res_api: any;

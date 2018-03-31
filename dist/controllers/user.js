@@ -118,6 +118,42 @@ exports.getSignup = (req, res) => __awaiter(this, void 0, void 0, function* () {
         handler.handlerError(error);
     }
 });
+exports.addExcel = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        /**/
+        // Call API get Scope
+        const api = new api_1.BaseApi();
+        const res_api = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
+        const arrScope = _.groupBy(res_api, "resource");
+        const arrResource = (Object.keys(arrScope));
+        // console.log(result[abc[0]]);
+        res.render("account/addexcel", {
+            title: "Create Account Excel",
+            arrUsers: []
+        });
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
+exports.postAddExcel = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        // console.log(req.file);
+        const api = new api_1.BaseApi();
+        const resExcel = yield api.getExcelJson(req.file.path);
+        const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/addList", resExcel);
+        // console.log(result);
+        yield res.render("account/addexcel", {
+            title: "Create Account Excel",
+            arrUsers: res_api
+        });
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
 /**
  * POST /signup
  * Create a new local account.
@@ -203,6 +239,29 @@ exports.getUpdateUser = (req, res, next) => __awaiter(this, void 0, void 0, func
         handler.handlerError(error);
     }
 });
+exports.patchResetPass = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    console.log(req.body);
+    try {
+        req.assert("username", "Username is not valid").notEmpty();
+        const errors = req.validationErrors();
+        // console.log(errors);
+        if (errors) {
+            req.flash("errors", errors);
+            return res.redirect("/user/1");
+        }
+        // const datapost = {phone : req.body.phone};
+        // console.log(datapost);
+        // Call API add
+        const api = new api_1.BaseApi();
+        const res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/resetPass/" + req.body.username, []);
+        console.log(res_api);
+        return res.redirect("/user/1");
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
 exports.postUpdatePhone = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body);
     try {
@@ -267,10 +326,11 @@ exports.getAllUsers = (req, res) => __awaiter(this, void 0, void 0, function* ()
     try {
         let countpage;
         countpage = 0;
+        console.log(req.params);
         const api = new api_1.BaseApi();
         if (req.params.page < 0)
             req.params.page = 0;
-        const size = 8;
+        const size = 30;
         // req.params.page = 1;
         // req.params.size = 5;
         let res_api;

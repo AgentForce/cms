@@ -8,7 +8,7 @@ block content
           h2 New User
         include ../partials/flash
         .panel.panel-widget.forms-panel
-          form(method="post").form-horizontal  
+          form(method="post", action="/addExcel", enctype="multipart/form-data").form-horizontal  
             .form
               div(class="form-grids widget-shadow" data-example-id="basic-forms")
                 .form-title
@@ -18,26 +18,24 @@ block content
                     .btn.btn-default.btn-file
                       i.fa.fa-paperclip
                       span File Excel
-                      input(class="form-control1" type="file" name="level" id="level" placeholder="Address")
-                    p.help-block Max. 32MB
+                      input( type="file" name="file_path" id="file_path" placeholder="Address")
+                    p.help-block
+                      a(href="/sample/Sample-data-user.xlsx") Download File Sample
                   .col-sm-offset-2
                     button(type="submit" class="btn btn-danger") Add New
             .form
               div(data-example-id="basic-forms")
                 .form-title
                   h4 Kết Quả
-                for resource in arrResource 
-                  .panel.panel-widget
-                  .inbox-page
-                    input(style="float: left; margin:7px; margin-left: 15px; margin-right: 20px" value= resource name="resource_ids" type="checkbox" class="checkbox" required="")
-                    h4(style="float: left; color: #fd5c63 !important;")= resource
+                for user in arrUsers
+                  div(class="inbox-row widget-shadow" id="accordion" role="tablist" aria-multiselectable="true")
+                    .mail.mail-name(style="background-color:" + user.style)
+                      p= user.username
+                      p= user.phone
+                      p= user.reportto
+                    .mail(style="background-color:" + user.style)
+                      p= user.fullname
+                      p= user.identity_card
+                    .mail(style="float: right")
+                      p= user.resultInsert
                     .clearfix
-                    for scope in arrScope[resource]
-                      div(class="inbox-row widget-shadow" id="accordion" role="tablist" aria-multiselectable="true")
-                        .mail
-                          input(type="checkbox" value= scope.scope name= "scope" class="checkbox")
-                        .mail.mail-name
-                          h6= scope.scope
-                        .mail
-                          p= scope.name
-                        .clearfix

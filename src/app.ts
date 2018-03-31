@@ -12,6 +12,7 @@ import * as mongoose from "mongoose";
 import * as passport from "passport";
 import * as expressValidator from "express-validator";
 import * as bluebird from "bluebird";
+const multer = require("multer");
 
 const MongoStore = mongo(session);
 
@@ -97,9 +98,12 @@ app.get("/logout", passportConfig.isAuthenticated, userController.logout);
 // app.post("/forgot", passportConfig.isAuthenticated, userController.postForgot);
 // app.get("/reset/:token", userController.getReset);
 // app.post("/reset/:token", userController.postReset);
+app.post("/user/resetPass", passportConfig.isAuthenticated, userController.patchResetPass);
+app.post("/addExcel",  multer({ dest: "./uploads/"}).single("file_path"), userController.postAddExcel);
 app.post("/user/updatephone/:id", passportConfig.isAuthenticated, userController.postUpdatePhone);
 app.get("/user/edit/:id", passportConfig.isAuthenticated, userController.getUpdateUser);
 app.get("/user/add", passportConfig.isAuthenticated, userController.getSignup);
+app.get("/user/addExcel", passportConfig.isAuthenticated, userController.addExcel);
 app.post("/user/add", passportConfig.isAuthenticated, userController.postSignup);
 app.get("/contact", passportConfig.isAuthenticated, contactController.getContact);
 app.post("/contact", passportConfig.isAuthenticated, contactController.postContact);
@@ -110,11 +114,10 @@ app.post("/account/profile", passportConfig.isAuthenticated, userController.post
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
-app.get("/role/:id", passportConfig.isAuthenticated, roleController.getRole);
+app.get("/role/:page", passportConfig.isAuthenticated, roleController.getRole);
+app.get("/role/link/:id", passportConfig.isAuthenticated, roleController.getLinkRole);
 app.post("/role", passportConfig.isAuthenticated, roleController.postRole);
-app.get("/role/link/:idrole", passportConfig.isAuthenticated, roleController.getLinkRole);
 app.post("/role/link/:idrole", passportConfig.isAuthenticated, roleController.postLinkRole);
-
 app.get("/permission/:id", passportConfig.isAuthenticated, permissionController.getPermission);
 app.post("/permission", passportConfig.isAuthenticated, permissionController.postPermission);
 
