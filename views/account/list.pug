@@ -79,7 +79,7 @@ block content
                             input(type="submit" value="Change" style="margin-top: -4px").btn.btn-primary
                     td
                       - if(user.status > 0)
-                        a(href="http://")
+                        a(href="/user/changeStatus/" + user.username + "/" + user.status)
                           i.fa.fa-download.mail-icon
                           - if(user.status === 0 ) var info = 'OTP';
                           - if(user.status === 1 ) var info = 'Active';
@@ -90,9 +90,7 @@ block content
                         span OTP
                     td
                       p
-                        a(href="/user/edit/" + user.id).hvr-float-shadow Edit Scope
-                      p
-                        a(href="/user/edit/" + user.id).hvr-float-shadow Edit Info
+                        a(href="/user/edit/" + user.username).hvr-float-shadow Edit Info
                       p 
                         button(type="button" class="btn btn-info" data-toggle="modal" data-target="#resetpass" + user.id) Reset Password
                       div(id="resetpass" + user.id class="modal fade" role="dialog")

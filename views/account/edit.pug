@@ -1,0 +1,97 @@
+extends ../layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 New User
+        include ../partials/flash
+        .panel.panel-widget.forms-panel
+          form(method="post").form-horizontal
+            .form
+              div(class="form-grids widget-shadow" data-example-id="basic-forms")
+                .form-title
+                  h4 Information User
+                .form-body
+                  .form-group
+                    label(for="email" class="col-sm-2 control-label") Email
+                    .col-sm-8
+                      input(type="email" class="form-control1" id="email" value= objUser.email name="email" placeholder="Email" data-error="Bruh, that email address is invalid" required="")
+                  .form-group
+                    label(for="FullName" class="col-sm-2 control-label") FullName
+                    .col-sm-8
+                      input(class="form-control1" id="fullName" value= objUser.fullName name="fullName" placeholder="Address")
+                  .form-group
+                    label(for="radio" class="col-sm-2 control-label") Gender
+                    .col-sm-8
+                      - var male = ""
+                      - var female = ""
+                      if(objUser.gender === 0)
+                        - female = "checked"
+                      if(objUser.gender === 1)
+                        - male = "checked"
+                      .radio-inline
+                        label
+                          input(type="radio" checked= male value=1 name="gender")
+                          span Male
+                      .radio-inline
+                        label
+                          input(type="radio" checked= female value=0 name="gender")
+                          span Female
+                  .form-group
+                    label(for="birthday" class="col-sm-2 control-label") Birthday
+                    .col-sm-8
+                      input(class="form-control1" name="birthday" value= objUser.birthday id="birthday" placeholder="2018-03-01 16:25:11")
+                  .form-group
+                    label(for="city" class="col-sm-2 control-label") City
+                    .col-sm-8
+                      select(name="city" id="city" class="form-control1")
+                        option(value=1) Hồ Chí Minh
+                        option(value=2) Hà Nội
+                        option(value=3) Đà Nẵng
+                  .form-group
+                    label(for="district" class="col-sm-2 control-label") District
+                    .col-sm-8
+                      select(name="district" id="district" class="form-control1")
+                        option(value=1) Quận 7
+                        option(value=2) Quận 1
+                        option(value=3) Quận 2
+                        option(value=4) Quận 3
+                        option(value=5) Quận 4
+                  .form-group
+                    label(for="address" class="col-sm-2 control-label") Address
+                    .col-sm-8
+                      input(class="form-control1" id="address" value= objUser.address name="address" placeholder="Address")
+            .form
+              div(class="form-grids widget-shadow" data-example-id="basic-forms")
+                .form-title
+                  h4 Other
+                .form-body
+                  .form-group
+                    label(for="level" class="col-sm-2 control-label") Level
+                    .col-sm-8
+                      input(class="form-control1" name="level" value= objUser.level id="level" placeholder="Address")
+                  .form-group
+                    label(for="expirence" class="col-sm-2 control-label") Expirence
+                    .col-sm-8
+                      input(class="form-control1" id="expirence" value= objUser.expirence name="expirence" placeholder="2018-03-01 16:25:11")
+                  .form-group
+                    label(for="badge" class="col-sm-2 control-label") Badge
+                    .col-sm-8
+                      select(name="badge" id="badge" class="form-control1")
+                        option(value='bag1') Badge 1
+                        option(value='bag12') Badge2
+                        option(value='bag13') Badge 3
+                        option(value='bag14') Badge 4
+                        option(value='bag15') Badge 5
+                  .form-group
+                    label(for="zone" class="col-sm-2 control-label") Zone
+                    .col-sm-8
+                      input(class="form-control1" id="zone" name="zone" value= objUser.zone placeholder="Zone")
+                  .form-group
+                    label(for="code_level" class="col-sm-2 control-label") Code Level
+                    .col-sm-8
+                      input(class="form-control1" id="code_level" value= objUser.level name="code_level" placeholder="Level")
+                  .col-sm-offset-2
+                    button(type="submit" class="btn btn-danger") Update

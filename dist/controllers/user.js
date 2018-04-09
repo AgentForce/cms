@@ -224,15 +224,56 @@ exports.getUpdateUser = (req, res, next) => __awaiter(this, void 0, void 0, func
     try {
         // Call API get Scope
         const api = new api_1.BaseApi();
-        const res_api = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/roles");
-        const arrScope = _.groupBy(res_api, "resource");
-        const arrResource = (Object.keys(arrScope));
-        // console.log(result[abc[0]]);
-        res.render("account/signup", {
+        let objUser;
+        objUser = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/getInfo/" + req.params.username);
+        res.render("account/edit", {
             title: "Update User",
-            arrResource: arrResource,
-            arrScope: arrScope
+            objUser: objUser.result
         });
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
+exports.postUpdateUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        console.log(req.body);
+        // Call API get Scope
+        const api = new api_1.BaseApi();
+        let objUser;
+        objUser = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/badgeLevel/" + req.params.username, req.body);
+        const info = [{
+                location: "body",
+                param: "id",
+                msg: "Updating successfully ",
+                value: ""
+            },];
+        // req.flash("success", info);
+        req.flash("success", info);
+        return res.redirect("/user/1");
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
+/**
+ * GET /account/unlink/:provider
+ * Unlink OAuth provider.
+ */
+exports.getChangeStatusUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        // Call API get Scope
+        const api = new api_1.BaseApi();
+        let res_api;
+        if (req.params.status == 1)
+            res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/deactive/" + req.params.username, []);
+        else
+            res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/active/" + req.params.username, []);
+        // console.log(result[abc[0]]);
+        console.log(res_api);
+        return res.redirect("/user/1");
     }
     catch (error) {
         const handler = new handler_1.HandlerApi();

@@ -72,7 +72,13 @@ class BaseApi {
             };
             // const req = client.get(serverConfigs.apiOauth + 'api/uaa/oauth/check_token?token=' + token, args, function (data: any, response: any) {
             const req = client.get(api_name, args, function (data, response) {
-                fulfill(data);
+                if (response.statusCode >= 200 && response.statusCode < 300)
+                    fulfill(data);
+                else {
+                    console.log("+++++");
+                    const decoder = new StringDecoder("utf8");
+                    reject("Server response statusCode: " + response.statusCode + " Data : " + decoder.write(data));
+                }
             });
             req.on("requestTimeout", function (req) {
                 console.log(" - request has expired :");
