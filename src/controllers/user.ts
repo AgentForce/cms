@@ -137,7 +137,7 @@ export let postAddExcel = async (req: any, res: Response) => {
     const api = new BaseApi();
     const resExcel = await api.getExcelJson(req.file.path);
     const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/addList", resExcel);
-    // console.log(result);
+    // console.log(resExcel);
     await res.render("account/addexcel", {
       title: "Create Account Excel",
       arrUsers: res_api

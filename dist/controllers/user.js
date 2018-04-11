@@ -143,7 +143,7 @@ exports.postAddExcel = (req, res) => __awaiter(this, void 0, void 0, function* (
         const api = new api_1.BaseApi();
         const resExcel = yield api.getExcelJson(req.file.path);
         const res_api = yield api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/addList", resExcel);
-        // console.log(result);
+        // console.log(resExcel);
         yield res.render("account/addexcel", {
             title: "Create Account Excel",
             arrUsers: res_api

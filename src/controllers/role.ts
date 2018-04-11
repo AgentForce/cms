@@ -126,7 +126,9 @@ export let postLinkRole = async(req: Request, res: Response) => {
       const obj = {
         id: arrSplit[0],
         scope: arrSplit[1],
-        name_scope: arrSplit[2]
+        name_scope: arrSplit[2],
+        role: arrSplit[3],
+        name_role: arrSplit[4]
       };
       data_post.push(obj);
     } else {
@@ -136,7 +138,9 @@ export let postLinkRole = async(req: Request, res: Response) => {
         const obj = {
           id: arrSplit[0],
           scope: arrSplit[1],
-          name_scope: arrSplit[2]
+          name_scope: arrSplit[2],
+          role: arrSplit[3],
+          name_role: arrSplit[4]
         };
         data_post.push(obj);
       }

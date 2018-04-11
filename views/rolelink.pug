@@ -18,7 +18,7 @@ block content
                       if role.resource === permission.resource
                         .checkbox
                           label(for="1" style="margin-bottom: 10px")
-                            input(type="checkbox" name="arrPermission" id=permission.id  value=permission.id + "||" + permission.scope + "||" + permission.name  style="font-size: 16px")
+                            input(type="checkbox" name="arrPermission" id=permission.id  value=permission.id + "||" + permission.scope + "||" + permission.name + "||" + role.role + "||" + role.name  style="font-size: 16px")
                             span(style="font-size: 18px")= permission.scope + "(" + permission.name + ")"
                     .form-group
                       button(type="submit" class="btn btn-primary disabled") Link
