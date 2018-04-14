@@ -164,19 +164,22 @@ export let postSignup = async (req: Request, res: Response, next: NextFunction) 
     // req.assert("report_to", "Report To is not valid").notEmpty();
     const datapost = req.body;
     const errors = req.validationErrors();
-    console.log(errors);
+    // console.log(errors);
     if (errors) {
       req.flash("errors", errors);
       return res.redirect("/user/add");
     }
-    datapost.resource_ids =  _.join(req.body.resource_ids, ",");
-    datapost.scope =  _.join(req.body.scope, ",");
-    console.log("+++++++");
-    console.log(datapost);
+    // console.log(typeof(datapost.resource_ids));
+    if (typeof datapost.resource_ids !== "string")
+      datapost.resource_ids =  _.join(req.body.resource_ids, ",");
+    if (typeof datapost.scope !== "string")
+      datapost.scope =  _.join(req.body.scope, ",");
+    // console.log("+++++++");
+    // console.log(datapost);
     // Call API add
     const api = new BaseApi();
     const res_api = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/add", datapost);
-    console.log(res_api);
+    // console.log(datapost);
     /*res.render("account/signup", {
       title: "Create Account",
       arrResource: [],
