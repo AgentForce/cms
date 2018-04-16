@@ -50,39 +50,46 @@ block content
               table(class="table tree-2 table-bordered table-striped table-condensed")
                 tr.treegrid-1.info
                   td
-                    span(style="margin-left: 20px") Nguyễn Văn A
+                    span(style="margin-left: 20px") Nguyễn Văn A1
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-2.treegrid-parent-1
+                tr.treegrid-2a.treegrid-parent-1
                   td
-                    span(style="margin-left: 20px") Nguyễn Văn A
+                    a(onclick="loadData('treegrid-parent-2a')")
+                      span(style="margin-left: 20px") Nguyễn Văn A21
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-3.treegrid-parent-1
-                  td Root 1
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-4.treegrid-parent-2
-                  td Root 1
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-5.info
+                span(id="treegrid-parent-2a")
+                tr.treegrid-5.treegrid-parent-1
                   td
-                    span(style="margin-left: 20px") Nguyễn Văn A
+                    span(style="margin-left: 20px") Nguyễn Văn A24
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
+                div(id="5")
                 tr.treegrid-6.treegrid-parent-1
-                  td Root 1
+                  td
+                    span(style="margin-left: 20px") Nguyễn Văn A22
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-7.treegrid-parent-5
-                  td Root 1
+                div(id="6")
+                tr.treegrid-7.treegrid-parent-1
+                  td
+                    span(style="margin-left: 20px") Nguyễn Văn A23
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-8.treegrid-parent-2
-                  td Root 1
+                div(id="7")
+                tr.treegrid-8.treegrid-parent-1
+                  td 
+                   span(style="margin-left: 20px") Root 14
                   td.hidden-xs Col 1
                   td.hidden-xs.hidden-sm Col 2
+                div(id="8")
+  script(type='text/javascript').
+    function loadData(id){
+      alert(id);
+      // $("#" + id).load("/currentdev");
+      $("#" + id).load("/currentdev");
+    }           
   script(src='/js/Chart.Core.js')
   script(src='/js/Chart.Doughnut.js')
   script.

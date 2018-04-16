@@ -12,3 +12,9 @@ export let index = (req: Request, res: Response) => {
     title: "Home"
   });
 };
+
+export let currentdev = (req: Request, res: Response) => {
+  res.render("homeload", {
+    title: "Home"
+  });
+};

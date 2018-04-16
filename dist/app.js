@@ -115,5 +115,6 @@ app.post("/role", passportConfig.isAuthenticated, roleController.postRole);
 app.post("/role/link/:idrole", passportConfig.isAuthenticated, roleController.postLinkRole);
 app.get("/permission/:id", passportConfig.isAuthenticated, permissionController.getPermission);
 app.post("/permission", passportConfig.isAuthenticated, permissionController.postPermission);
+app.get("/currentdev", homeController.currentdev);
 module.exports = app;
 //# sourceMappingURL=app.js.map

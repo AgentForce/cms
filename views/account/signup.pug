@@ -123,18 +123,26 @@ block content
                     .col-sm-8
                       input(class="form-control1" type="date" min="2000-12-31" id="expirence" name="expirence" placeholder="2018-03-01 16:25:11")
                   .form-group
+                    label(for="onboard_date" class="col-sm-2 control-label") onboard_date 
+                    .col-sm-8
+                      input(class="form-control1" type="date" id="onboard_date" name="onboard_date" placeholder="2018-03-01 16:25:11")
+                  .form-group
+                    label(for="manager_badge" class="col-sm-2 control-label") Manager Badge
+                    .col-sm-8
+                      select(name="manager_badge" id="manager_badge" class="form-control1")
+                        option(value='1') MBA Bạc
+                        option(value='2') MBA Vàng
+                        option(value='3') MBA Kim Cương
+                  .form-group
                     label(for="badge" class="col-sm-2 control-label") Badge
                     .col-sm-8
                       select(name="badge" id="badge" class="form-control1")
-                        option(value='MBA Bạc') MBA Bạc
-                        option(value='MBA Vàng') MBA Vàng
-                        option(value='MBA Kim Cương') MBA Kim Cương
-                        option(value='FC Bạc') FC Bạc
-                        option(value='FC Vàng') FC Vàng
-                        option(value='FC Kim Cương') FC Kim Cương
-                        option(value='COT') COT
-                        option(value='TOT') TOT
-                        option(value='MDRT') MDRT
+                        option(value='4') FC Bạc
+                        option(value='5') FC Vàng
+                        option(value='6') FC Kim Cương
+                        option(value='2') COT
+                        option(value='3') TOT
+                        option(value='1') MDRT
                   .form-group
                     label(for="zone" class="col-sm-2 control-label") Zone
                     .col-sm-8

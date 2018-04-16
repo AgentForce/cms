@@ -12,4 +12,9 @@ exports.index = (req, res) => {
         title: "Home"
     });
 };
+exports.currentdev = (req, res) => {
+    res.render("homeload", {
+        title: "Home"
+    });
+};
 //# sourceMappingURL=home.js.map
