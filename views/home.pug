@@ -1,10 +1,16 @@
 extends layout
 
 block content
+  link(rel='stylesheet', href='http://cdn.syncfusion.com/14.1.0.41/js/web/flat-azure/ej.web.all.min.css')
+  script(src="http://cdn.syncfusion.com/js/assets/external/jquery-1.10.2.min.js")
+  script(src="http://cdn.syncfusion.com/js/assets/external/jsrender.min.js")
+  script(src="http://cdn.syncfusion.com/js/assets/external/jquery.globalize.min.js")
+  script(src="http://cdn.syncfusion.com/js/assets/external/jquery.easing.1.3.min.js")
+  script(src="http://cdn.syncfusion.com/14.1.0.41/js/web/ej.web.all.min.js")
   div(id="page-wrapper")
     .main-page
       .row.four-grids
-        .col-md-4.ticket-grid
+        .col-md-3.ticket-grid
           .tickets
             .grid-left
               .book-icon
@@ -14,7 +20,7 @@ block content
                 span Answered
               p 452
             .clearfix
-        .col-md-4.ticket-grid
+        .col-md-3.ticket-grid
           .tickets
             .grid-left
               .book-icon
@@ -24,7 +30,7 @@ block content
                 span Answered
               p 452
             .clearfix
-        .col-md-4.ticket-grid
+        .col-md-3.ticket-grid
           .tickets
             .grid-left
               .book-icon
@@ -34,59 +40,23 @@ block content
                 span Answered
               p 452
             .clearfix
-      .row
-        .col-md-5.program-grid
+        .col-md-3.program-grid
           .panel.panel-widget
-            .panel-title
+            .panel-title(style="font-size: 14px")
               span Monthly
             .chart-skills
               .skills-holder(id="canvas-holder")
-                canvas(id="chart-area" width="500" height="500")
-        .col-md-7.monthly-grid
+                canvas(id="chart-area" width="300" height="300")
+      .row
+        .col-md-12.monthly-grid
           .panel.panel-widget
             .panel-title
               span Tree View
             .panel-body
-              table(class="table tree-2 table-bordered table-striped table-condensed")
-                tr.treegrid-1.info
-                  td
-                    span(style="margin-left: 20px") Nguyễn Văn A1
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                tr.treegrid-2a.treegrid-parent-1
-                  td
-                    a(onclick="loadData('treegrid-parent-2a')")
-                      span(style="margin-left: 20px") Nguyễn Văn A21
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                span(id="treegrid-parent-2a")
-                tr.treegrid-5.treegrid-parent-1
-                  td
-                    span(style="margin-left: 20px") Nguyễn Văn A24
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                div(id="5")
-                tr.treegrid-6.treegrid-parent-1
-                  td
-                    span(style="margin-left: 20px") Nguyễn Văn A22
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                div(id="6")
-                tr.treegrid-7.treegrid-parent-1
-                  td
-                    span(style="margin-left: 20px") Nguyễn Văn A23
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                div(id="7")
-                tr.treegrid-8.treegrid-parent-1
-                  td 
-                   span(style="margin-left: 20px") Root 14
-                  td.hidden-xs Col 1
-                  td.hidden-xs.hidden-sm Col 2
-                div(id="8")
+              div(id="Treegrid") 
   script(type='text/javascript').
     function loadData(id){
-      alert(id);
+      // alert(id);
       // $("#" + id).load("/currentdev");
       $("#" + id).load("/currentdev");
     }           
@@ -113,3 +83,100 @@ block content
       var ctx = document.getElementById("chart-area").getContext("2d");
       window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, { responsive: true });
     };
+  script.
+    var old_index = 0;
+    var common = 0;
+    function AddABCRow(filter, index){
+      // alert(index)
+      // document.getElementById("" + index).remove();      
+      var treeObj = $("#Treegrid").data("ejTreeGrid");          
+      // treeObj.setModel({ "selectedRowIndex": index });
+      // var tr =  $(this).closest("tr").index();
+      // alert("tre" + tr)
+      // alert(filter + " = "+ index);
+      $.get('/currentdev/' + index, function(result) {
+        console.log(result.length + "độ dài");
+        for( var j = 0; j < result.length; j++){
+          var data = result[j];
+          data.username = '<a id="'+ data.id +'" onclick="AddABCRow('+ data.id +',' + data.id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a> ' + data.username;
+          data.code_level = data.id;
+          // alert("dataa "+ data.id);
+          //if(index > old_index)
+            // treeObj.setModel({ "selectedRowIndex": index });
+          //else
+          //   treeObj.setModel({ "selectedRowIndex": index + common });
+          // console.log(ej.TreeGrid.RowPosition);
+          
+          var table, tr, td, i;
+          
+          table = document.getElementById("Treegride-table");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            // alert(td.innerHTML);
+            if (td) {
+              // alert(td.innerHTML + " === " + filter);
+              if (td.innerHTML.indexOf(filter) > -1) {
+                // alert(td.innerHTML.indexOf(filter));
+                // alert(i + "i");
+                treeObj.setModel({ "selectedRowIndex": i });
+      
+                // treeObj.setModel({ "selectedRowIndex": index });
+                treeObj.addRow(data, ej.TreeGrid.RowPosition.Child);
+               } else {
+                // alert("khong")
+               }
+            }       
+          }
+
+
+
+          
+          
+          /*if(i > 0){
+            treeObj.addRow(data, ej.TreeGrid.RowPosition.Above);
+          }else{
+            treeObj.addRow(data, ej.TreeGrid.RowPosition.Child);
+          }*/
+          
+          
+        }
+        
+        common = common + result.length;
+        
+        document.getElementById("" + index).remove();
+      });
+      // alert(common);
+      
+    }
+  script.
+    var projectData= '!{users}';
+    projectData = JSON.parse(projectData)
+     
+    var projectDataXl = [];
+    for(var i=0; i< projectData.length ; i++){
+      // console.log(projectData[i].username);
+      var obj_new = {
+        username : ' <a id="' + projectData[i].id + '" onclick="AddABCRow('+ projectData[i].id +',' + projectData[i].id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a>'+ projectData[i].username ,
+        code_level : projectData[i].id
+      }
+      projectDataXl[i] = obj_new;
+    }
+    // console.log(projectDataXl); //[object Object],[object Object]
+
+    $(function () {
+
+        $("#Treegrid").ejTreeGrid({
+            dataSource: projectDataXl,
+            childMapping: "subtasks",
+            columns: [
+                { field: "username", headerText: "Username"},
+                { field: "code_level", headerText: "Level code - badge - onboard_date", width: "55" }
+            ],
+            rowHeight : 35,
+            sizeSettings: {
+                width: "100%",
+            },
+            treeColumnIndex: 0
+        });
+    });
