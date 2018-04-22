@@ -95,11 +95,12 @@ block content
       // alert("tre" + tr)
       // alert(filter + " = "+ index);
       $.get('/currentdev/' + index, function(result) {
-        console.log(result.length + "độ dài");
+        // console.log(result.length + "độ dài");
         for( var j = 0; j < result.length; j++){
           var data = result[j];
-          data.username = '<a id="'+ data.id +'" onclick="AddABCRow('+ data.id +',' + data.id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a> ' + data.username;
-          data.code_level = data.id;
+          data.username = '<a id="'+ data.id +'" onclick="AddABCRow('+ data.id +',' + data.id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a> ' + data.username + " - " + data.fullName;
+          data.id = data.id;
+          data.code_level = data.code_level + " - " + data.badge + " - " + data.onboard_date;
           // alert("dataa "+ data.id);
           //if(index > old_index)
             // treeObj.setModel({ "selectedRowIndex": index });
@@ -112,7 +113,7 @@ block content
           table = document.getElementById("Treegride-table");
           tr = table.getElementsByTagName("tr");
           for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
+            td = tr[i].getElementsByTagName("td")[0];
             // alert(td.innerHTML);
             if (td) {
               // alert(td.innerHTML + " === " + filter);
@@ -157,8 +158,9 @@ block content
     for(var i=0; i< projectData.length ; i++){
       // console.log(projectData[i].username);
       var obj_new = {
-        username : ' <a id="' + projectData[i].id + '" onclick="AddABCRow('+ projectData[i].id +',' + projectData[i].id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a>'+ projectData[i].username ,
-        code_level : projectData[i].id
+        id: projectData[i].id,
+        username : ' <a id="' + projectData[i].id + '" onclick="AddABCRow('+ projectData[i].id +',' + projectData[i].id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a>'+ projectData[i].username + " - " + + projectData[i].fullName ,
+        code_level : projectData[i].code_level + " - " + projectData[i].badge + " - " + projectData[i].onboard_date
       }
       projectDataXl[i] = obj_new;
     }
@@ -170,13 +172,14 @@ block content
             dataSource: projectDataXl,
             childMapping: "subtasks",
             columns: [
+                { field: "id", headerText: "ID", width: "8"},
                 { field: "username", headerText: "Username"},
                 { field: "code_level", headerText: "Level code - badge - onboard_date", width: "55" }
             ],
-            rowHeight : 35,
+            rowHeight : 45,
             sizeSettings: {
                 width: "100%",
             },
-            treeColumnIndex: 0
+            treeColumnIndex: 1
         });
     });
