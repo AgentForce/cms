@@ -16,9 +16,13 @@ block content
               .book-icon
                 i.fa.fa-book
             .grid-right
-              h3 Answered
-                span Answered
-              p 452
+              h3 Users
+              p= countSum
+              br
+              br
+              h3 Monthly
+              p= countMonth
+              br
             .clearfix
         .col-md-3.ticket-grid
           .tickets
@@ -26,9 +30,13 @@ block content
               .book-icon
                 i.fa.fa-rocket
             .grid-right
-              h3 Answered
-                span Answered
-              p 452
+              h3 Users DeActive
+              p= countSumDeActive
+              br
+              br
+              h3 Monthly
+              p= countDeActiveMonth
+              br
             .clearfix
         .col-md-3.ticket-grid
           .tickets
@@ -36,9 +44,13 @@ block content
               .book-icon
                 i.fa.fa-user
             .grid-right
-              h3 Answered
-                span Answered
-              p 452
+              h3 Users Active
+              p= countSumActive
+              br
+              br
+              h3 Monthly
+              p= countActiveMonth
+              br
             .clearfix
         .col-md-3.program-grid
           .panel.panel-widget
@@ -65,19 +77,14 @@ block content
   script.
     var doughnutData = [
       {
-        value: 2,
-        label: "One",
+        value: !{countActiveMonth},
+        label: "Active",
         color: "#99CC00"
       },
       {
-        value: 6,
-        label: "Twp",
+        value: !{countDeActiveMonth},
+        label: "DeActive",
         color: "#FF3300"
-      },
-      {
-        value: 10,
-        label: "Three",
-        color: "#944DDB"
       }];
     window.onload = function () {
       var ctx = document.getElementById("chart-area").getContext("2d");

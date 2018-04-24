@@ -21,7 +21,13 @@ exports.index = (req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log(res_api);
     res.render("home", {
         title: "Home",
-        users: JSON.stringify(res_api)
+        users: JSON.stringify(res_api.resQ),
+        "countSum": res_api.countSum,
+        "countSumActive": res_api.countSumActive,
+        "countSumDeActive": res_api.countSum - res_api.countSumActive,
+        "countMonth": res_api.countMonth,
+        "countActiveMonth": res_api.countActiveMonth,
+        "countDeActiveMonth": res_api.countMonth - res_api.countActiveMonth
     });
 });
 exports.currentdev = (req, res) => __awaiter(this, void 0, void 0, function* () {
