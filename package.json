@@ -4,7 +4,7 @@
   "description": "CMS Manulife",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+    "url": "https://github.com/AgentForce/cms.git"
   },
   "author": "Kanet",
   "license": "MIT",

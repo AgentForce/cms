@@ -102,22 +102,22 @@ block content
                     label(for="level" class="col-sm-2 control-label") Level
                     .col-sm-8
                       select(name="level" id="level" class="form-control1")
-                        option(value='1') 1
-                        option(value='2') 2
-                        option(value='3') 3
-                        option(value='4') 4
-                        option(value='5') 5
-                        option(value='6') 6
-                        option(value='7') 7
-                        option(value='8') 8
-                        option(value='9') 9
-                        option(value='10') 10
-                        option(value='11') 11
-                        option(value='12') 12
-                        option(value='13') 13
-                        option(value='14') 14
-                        option(value='15') 15
-                        option(value='16') 16
+                        option(value='1-CAO') 01-CAO
+                        option(value='2-SRH1') 02-SRH1
+                        option(value='3-AVP') 03-AVP
+                        option(value='4-SRD') 04-SRD
+                        option(value='5-RD') 05-RD
+                        option(value='6-DRF') 06-DRF
+                        option(value='7-SSM') 07-SSM
+                        option(value='8-PSSM') 08-PSSM
+                        option(value='9-SM') 09-SM
+                        option(value='10-AM') 10-AM
+                        option(value='11-BM') 11-BM
+                        option(value='12-SDM') 12-SDM
+                        option(value='13-DM') 13-DM
+                        option(value='14-SUM') 14-SUM
+                        option(value='15-UM') 15-UM
+                        option(value='16-FA') 16-FA
                   .form-group
                     label(for="expirence" class="col-sm-2 control-label") Expirence
                     .col-sm-8
@@ -147,14 +147,117 @@ block content
                     label(for="zone" class="col-sm-2 control-label") Zone
                     .col-sm-8
                       input(class="form-control1" id="zone" name="zone" placeholder="Zone")
-                  .form-group
-                    label(for="code_level" class="col-sm-2 control-label") Code Level
-                    .col-sm-8
-                      select(name="code_level" id="code_level" class="form-control1")
-                        option(value='FA') FA
-                        option(value='UM') UM
-                        option(value='BM') BM
-                        option(value='AM') AM
-                        option(value='SM') SM
                   .col-sm-offset-2
                     button(type="submit" class="btn btn-danger") Add New
+
+    script(type='text/javascript').
+      function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+              /*check if the item starts with the same letters as the text field value:*/
+              if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+              }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+              /*If the arrow DOWN key is pressed,
+              increase the currentFocus variable:*/
+              currentFocus++;
+              /*and and make the current item more visible:*/
+              addActive(x);
+            } else if (e.keyCode == 38) { //up
+              /*If the arrow UP key is pressed,
+              decrease the currentFocus variable:*/
+              currentFocus--;
+              /*and and make the current item more visible:*/
+              addActive(x);
+            } else if (e.keyCode == 13) {
+              /*If the ENTER key is pressed, prevent the form from being submitted,*/
+              e.preventDefault();
+              if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+              }
+            }
+        });
+        function addActive(x) {
+          /*a function to classify an item as "active":*/
+          if (!x) return false;
+          /*start by removing the "active" class on all items:*/
+          removeActive(x);
+          if (currentFocus >= x.length) currentFocus = 0;
+          if (currentFocus < 0) currentFocus = (x.length - 1);
+          /*add class "autocomplete-active":*/
+          x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+          /*a function to remove the "active" class from all autocomplete items:*/
+          for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+          }
+        }
+        function closeAllLists(elmnt) {
+          /*close all autocomplete lists in the document,
+          except the one passed as an argument:*/
+          var x = document.getElementsByClassName("autocomplete-items");
+          for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+              x[i].parentNode.removeChild(x[i]);
+            }
+          }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+            });
+      }
+
+      /*An array containing all the country names in the world:*/
+      var countries = [];
+      /*for user in users
+      /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+      var projectData= '!{usersCom}';
+      projectData = JSON.parse(projectData)
+      // console.log(projectData.length);
+      // console.log(projectData);
+      for(var i=0; i< projectData.length ; i++){
+        // console.log(projectData[i].username);
+        countries[i] = projectData[i].username;
+      }
+      autocomplete(document.getElementById("report_to"), countries);

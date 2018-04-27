@@ -96,6 +96,7 @@ app.post("/addExcel", multer({ dest: "./uploads/" }).single("file_path"), userCo
 app.post("/user/updatephone/:id", passportConfig.isAuthenticated, userController.postUpdatePhone);
 app.get("/user/edit/:username", passportConfig.isAuthenticated, userController.getUpdateUser);
 app.post("/user/edit/:username", passportConfig.isAuthenticated, userController.postUpdateUser);
+app.post("/user/uReport/:id", passportConfig.isAuthenticated, userController.postChangeReportToUser);
 app.get("/user/changeStatus/:username/:status", passportConfig.isAuthenticated, userController.getChangeStatusUser);
 app.get("/user/add", passportConfig.isAuthenticated, userController.getSignup);
 app.get("/user/addExcel", passportConfig.isAuthenticated, userController.addExcel);

@@ -101,10 +101,13 @@ export let getSignup = async (req: Request, res: Response) => {
     const arrScope = _.groupBy(res_api, "resource");
     const arrResource = (Object.keys(arrScope));
     // console.log(result[abc[0]]);
+    let res_api_full: any;
+    res_api_full = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
     res.render("account/signup", {
       title: "Create Account",
       arrResource: arrResource,
-      arrScope: arrScope
+      arrScope: arrScope,
+      usersCom: JSON.stringify(res_api_full.data)
     });
   } catch (error) {
     const handler = new HandlerApi();
@@ -163,6 +166,10 @@ export let postSignup = async (req: Request, res: Response, next: NextFunction) 
     req.assert("resource_ids", "Resource is not valid").notEmpty();
     // req.assert("report_to", "Report To is not valid").notEmpty();
     const datapost = req.body;
+    let xl_arr: any;
+    xl_arr = datapost.level.split("-");
+    datapost.level = xl_arr[0];
+    datapost.code_level = xl_arr[1];
     const errors = req.validationErrors();
     // console.log(errors);
     if (errors) {
@@ -300,23 +307,46 @@ export let patchResetPass = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export let postUpdatePhone = async (req: Request, res: Response, next: NextFunction) => {
+export let postChangeReportToUser = async (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body);
+  try {
+    req.assert("des", "reportto is not valid").notEmpty();
+    req.assert("src", "Username is not valid").notEmpty();
+    const errors = req.validationErrors();
+    // console.log(errors);
+    if (errors) {
+      req.flash("errors", errors);
+      return res.redirect("/user/1");
+    }
+    // Call API add
+    const api = new BaseApi();
+    const res_api = await api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/changeReportTo", req.body);
+    // console.log(res_api);
+    return res.redirect("/user/1");
+
+  } catch (error) {
+    const handler = new HandlerApi();
+    handler.handlerError(error);
+  }
+};
+
+export let postUpdatePhone = async (req: Request, res: Response, next: NextFunction) => {
+  // console.log(req.body);
   try {
     req.assert("phone", "Phone is not valid").notEmpty();
     req.assert("username", "Username is not valid").notEmpty();
     const errors = req.validationErrors();
-    console.log(errors);
+    // console.log(errors);
     if (errors) {
       req.flash("errors", errors);
       return res.redirect("/user/1");
     }
     const datapost = {phone : req.body.phone};
-    console.log(datapost);
+    // console.log(datapost);
     // Call API add
     const api = new BaseApi();
     const res_api = await api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/updatePhone/" + req.body.username, datapost);
-    console.log(res_api);
+    // console.log(res_api);
     return res.redirect("/user/1");
 
   } catch (error) {
@@ -346,11 +376,14 @@ export let postAllUsers = async (req: Request, res: Response) => {
       res_api.total = 0;
       res_api.data = [];
     }
+    let res_api_full: any;
+    res_api_full = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
     res.render("account/list", {
       title: "Account Management",
       users: res_api.data,
       page: req.params.page - 0 ,
       countpage: countpage,
+      usersCom: JSON.stringify(res_api_full.data),
       total: res_api.total
     });
   } catch (error) {
@@ -378,9 +411,12 @@ export let getAllUsers = async (req: Request, res: Response) => {
       res_api.total = 0;
       res_api.data = [];
     }
+    let res_api_full: any;
+    res_api_full = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
     res.render("account/list", {
       title: "Account Management",
       users: res_api.data,
+      usersCom: JSON.stringify(res_api_full.data),
       page: req.params.page - 0 ,
       countpage: countpage,
       total: res_api.total

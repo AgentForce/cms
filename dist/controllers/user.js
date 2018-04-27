@@ -107,10 +107,13 @@ exports.getSignup = (req, res) => __awaiter(this, void 0, void 0, function* () {
         const arrScope = _.groupBy(res_api, "resource");
         const arrResource = (Object.keys(arrScope));
         // console.log(result[abc[0]]);
+        let res_api_full;
+        res_api_full = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
         res.render("account/signup", {
             title: "Create Account",
             arrResource: arrResource,
-            arrScope: arrScope
+            arrScope: arrScope,
+            usersCom: JSON.stringify(res_api_full.data)
         });
     }
     catch (error) {
@@ -169,6 +172,10 @@ exports.postSignup = (req, res, next) => __awaiter(this, void 0, void 0, functio
         req.assert("resource_ids", "Resource is not valid").notEmpty();
         // req.assert("report_to", "Report To is not valid").notEmpty();
         const datapost = req.body;
+        let xl_arr;
+        xl_arr = datapost.level.split("-");
+        datapost.level = xl_arr[0];
+        datapost.code_level = xl_arr[1];
         const errors = req.validationErrors();
         // console.log(errors);
         if (errors) {
@@ -306,23 +313,45 @@ exports.patchResetPass = (req, res, next) => __awaiter(this, void 0, void 0, fun
         handler.handlerError(error);
     }
 });
-exports.postUpdatePhone = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+exports.postChangeReportToUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     console.log(req.body);
+    try {
+        req.assert("des", "reportto is not valid").notEmpty();
+        req.assert("src", "Username is not valid").notEmpty();
+        const errors = req.validationErrors();
+        // console.log(errors);
+        if (errors) {
+            req.flash("errors", errors);
+            return res.redirect("/user/1");
+        }
+        // Call API add
+        const api = new api_1.BaseApi();
+        const res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/changeReportTo", req.body);
+        // console.log(res_api);
+        return res.redirect("/user/1");
+    }
+    catch (error) {
+        const handler = new handler_1.HandlerApi();
+        handler.handlerError(error);
+    }
+});
+exports.postUpdatePhone = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    // console.log(req.body);
     try {
         req.assert("phone", "Phone is not valid").notEmpty();
         req.assert("username", "Username is not valid").notEmpty();
         const errors = req.validationErrors();
-        console.log(errors);
+        // console.log(errors);
         if (errors) {
             req.flash("errors", errors);
             return res.redirect("/user/1");
         }
         const datapost = { phone: req.body.phone };
-        console.log(datapost);
+        // console.log(datapost);
         // Call API add
         const api = new api_1.BaseApi();
         const res_api = yield api.apiPatchJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/updatePhone/" + req.body.username, datapost);
-        console.log(res_api);
+        // console.log(res_api);
         return res.redirect("/user/1");
     }
     catch (error) {
@@ -353,11 +382,14 @@ exports.postAllUsers = (req, res) => __awaiter(this, void 0, void 0, function* (
             res_api.total = 0;
             res_api.data = [];
         }
+        let res_api_full;
+        res_api_full = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
         res.render("account/list", {
             title: "Account Management",
             users: res_api.data,
             page: req.params.page - 0,
             countpage: countpage,
+            usersCom: JSON.stringify(res_api_full.data),
             total: res_api.total
         });
     }
@@ -386,9 +418,12 @@ exports.getAllUsers = (req, res) => __awaiter(this, void 0, void 0, function* ()
             res_api.total = 0;
             res_api.data = [];
         }
+        let res_api_full;
+        res_api_full = yield api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
         res.render("account/list", {
             title: "Account Management",
             users: res_api.data,
+            usersCom: JSON.stringify(res_api_full.data),
             page: req.params.page - 0,
             countpage: countpage,
             total: res_api.total
