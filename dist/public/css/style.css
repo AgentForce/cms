@@ -2493,16 +2493,20 @@ button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-ma
 /*-- //maps --*/
 /*-- login --*/
 .login-bg{
-    background: url(../images/l4.jpg) no-repeat 0px 0px;
-    background-size: cover;
     padding: 7em 0;
+    background:url("https://www.manulife.com.sg/images/HP_01@2x.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 750px;
 }
 .login-body{
 	width: 30%;
     margin:0 auto;
 }
 .login-heading{
-    background: #67d3e0;
+    background: #50ce59bf;
     padding: 3em 0em;
 }
 .login-heading h1{

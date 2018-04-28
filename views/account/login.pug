@@ -17,7 +17,7 @@ html(lang='')
   body.login-bg
     .login-body
       .login-heading
-        h1 Login
+        img( style="width:55%; margin-left: 20px" src="http://static.wixstatic.com/media/959d4c_173ed78d1ece4d39998f1c522fe4fa84.png/v1/fill/w_783,h_207,al_c,usm_0.66_1.00_0.01/959d4c_173ed78d1ece4d39998f1c522fe4fa84.png", alt="")
       .login-info
          form.form-horizontal(method='POST')
           input(type='hidden', name='_csrf', value=_csrf)
@@ -32,5 +32,5 @@ html(lang='')
           .form-group
             .col-sm-offset-3.col-sm-7
               button.col-sm-9.btn.btn-primary(type='submit')
-                i.fa.fa-user
+                i.fa
                 | Login
