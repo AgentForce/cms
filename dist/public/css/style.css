@@ -139,7 +139,7 @@ button#showLeftPush {
 .nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
     background-color: transparent;
-    color: #67d3e0;
+    color: #22bb7d;
 }
 .sidebar .arrow {
     float: right;
@@ -177,7 +177,7 @@ span.nav-badge {
 span.nav-badge-btm {
     font-size: 12px;
     color: #FFF;
-    background: #67d3e0;
+    background: #22bb7d;
     position: absolute;
     top: 18%;
     right: 15%;
@@ -188,7 +188,7 @@ span.nav-badge-btm {
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
     background: none;
-    color: #67D3E0;
+    color: #22bb7d;
 }
 .chart-nav span.nav-badge-btm {
 	right: 5%;
@@ -245,10 +245,10 @@ ul.dropdown-menu li {
 	margin-left:0;
 }
 .sidebar .nav-second-level li a.active ,.sidebar ul li a.active{
-    color: #67d3e0;
+    color: #22bb7d;
 }
 li.active a i, .act a i {
-    color: #67d3e0;
+    color: #22bb7d;
 }
 .custom-nav > li.act > a, .custom-nav > li.act > a:hover, .custom-nav > li.act > a:focus {
     background-color: #353f4f;
@@ -263,7 +263,7 @@ li.active a i, .act a i {
     color: #EB525D;
 }
 i.fa.fa-bell{
-    color: #67D3E0;
+    color: #22bb7d;
 }
 i.fa.fa-tasks{
     color: #30BB74;
@@ -296,7 +296,7 @@ i.fa.fa-tasks{
 }
 /* ----Logo----*/
 .logo {
-    background: #67d3e0;
+    background: #12d03fd4;
     text-align: center;
     float: left;
 }
@@ -383,7 +383,7 @@ i.fa.fa-tasks{
 	-webkit-transition: stroke-dashoffset 0.5s;
 	transition: stroke-dashoffset 0.5s;
 	pointer-events: none;
-	stroke: #67D3E0;
+	stroke: #22bb7d;
     stroke-width: 6px;
     stroke-dasharray: 962;
     stroke-dashoffset: 962;
@@ -1717,7 +1717,7 @@ abbr[data-original-title] {
 	text-decoration:none;
 }
 .copyright p a:hover{
-    color:#67d3e0;
+    color:#22bb7d;
 }
 /*-- projects --*/
 .social {
@@ -2009,8 +2009,8 @@ span.badge1 {
     color: #fff;
 }
 .btn-primary:hover{
-	background-color: #67D3E0 !important;
-    border-color: #67D3E0 !important;
+	background-color: #22bb7d !important;
+    border-color: #22bb7d !important;
     color: #fff !important;
 }
 .caret {
@@ -2290,7 +2290,7 @@ canvas#viewport {
 	border-radius: inherit;
 }
 .validation-grids .btn-primary:hover{
-	 background:#67D3E0 !important;
+	 background:#22bb7d !important;
 }
 .bottom .btn-primary {
     margin: 0;
@@ -2415,7 +2415,7 @@ button.note-color-btn {
 }
 .form-title {
     padding: 1em 2em;
-    background-color: #67D3E0;
+    background-color: #22bb7d;
     border-bottom: 1px solid #D6D5D5;
 }
 .form-body {
@@ -2482,7 +2482,7 @@ div#container1 {
 button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-map-btn {
     background: none !important;
     color: #2A2F43 !important;
-    border: solid 1px #67D3E0 !important;
+    border: solid 1px #22bb7d !important;
     padding: 0 1em;
 }
 .panel-widget iframe{
@@ -2543,7 +2543,7 @@ button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-ma
     margin: 1.5em 0 0;
 }
 .login-info input[type="submit"]:hover{
-	background:#67d3e0;
+	background:#22bb7d;
 	transition: 0.5s all;
 	-webkit-transition: 0.5s all;
 	-moz-transition: 0.5s all;
@@ -2568,7 +2568,7 @@ button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-ma
 }
 .forgot a {
 	font-size: .75em;
-    color: #67D3E0;
+    color: #22bb7d;
     font-weight: 600;
     display: block;
     text-transform: uppercase;
@@ -2588,7 +2588,7 @@ button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-ma
 }
 .signup-text a{
 	font-size: .75em;
-    color: #67D3E0;
+    color: #22bb7d;
     font-weight: 600;
     display: block;
     text-transform: uppercase;
@@ -2710,7 +2710,7 @@ button#default-map-btn, button#green-map-btn, button#blue-map-btn,button#grey-ma
     padding: 1em 1.5em;
 }
 .go-back a:hover{
-	background:#67d3e0;
+	background:#22bb7d;
 }
 .error-copyright {
     margin:3em 0 2em;
@@ -2815,7 +2815,7 @@ canvas#canvas {
     font-size: 0.9em;
 }
 .inbox-page .dropdown-menu > li > a:hover, .inbox-page .dropdown-menu > li > a:focus {
-	color: #67D3E0;
+	color: #22bb7d;
 }
 .mail-icon {
     margin-right: 7px;
@@ -2937,7 +2937,7 @@ canvas#canvas {
 }
 .compose-left span {
     float: right;
-    background-color: #67D3E0;
+    background-color: #22bb7d;
     padding: 3px 10px;
     font-size: .7em;
     border-radius: 4px;
@@ -3031,7 +3031,7 @@ canvas#canvas {
     margin-top: 1em;
 }
 .compose-right input[type="submit"]:hover {
-	background:#67d3e0;
+	background:#22bb7d;
 	transition: 0.5s all ease;
 	-webkit-transition: 0.5s all ease;
 	-moz-transition: 0.5s all ease;
