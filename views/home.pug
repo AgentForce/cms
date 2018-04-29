@@ -124,7 +124,8 @@ block content
           else if(data.badge == '7')
             badge = "FC Kim cương";
 
-          data.code_level = data.code_level + " - " + badge + " - " + data.onboard_date;
+          // data.code_level = data.code_level + " - " + badge + " - " + data.onboard_date;
+          data.code_level = data.code_level + " - " + badge + " - 04/2018" ;
           // alert("dataa "+ data.id);
           //if(index > old_index)
             // treeObj.setModel({ "selectedRowIndex": index });
@@ -199,7 +200,8 @@ block content
       var obj_new = {
         id: projectData[i].id,
         username : ' <a id="' + projectData[i].id + '" onclick="AddABCRow('+ projectData[i].id +',' + projectData[i].id + ')"><div class="e-icon e-treegridcollapse" style="float:left;display:inline-block; font-size:10px;"></div></a>'+ projectData[i].username + " - " + + projectData[i].fullName ,
-        code_level : projectData[i].code_level + " - " + badge + " - " + projectData[i].onboard_date
+        // 04/2018 code_level : projectData[i].code_level + " - " + badge + " - " + projectData[i].onboard_date
+        code_level : projectData[i].code_level + " - " + badge + " - 04/2018"
       }
       projectDataXl[i] = obj_new;
     }
