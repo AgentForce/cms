@@ -18,14 +18,15 @@ const multer = require("multer");
 const MongoStore = mongo(session);
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env.example" });
-console.log(process.env.MONGOLAB_URI);
-console.log("=======");
+// console.log(process.env.MONGOLAB_URI);
+// console.log("=======");
 // Controllers (route handlers)
 const homeController = require("./controllers/home");
 const userController = require("./controllers/user");
 const contactController = require("./controllers/contact");
 const roleController = require("./controllers/role");
 const permissionController = require("./controllers/permission");
+const reportController = require("./controllers/report");
 // API keys and Passport configuration
 const passportConfig = require("./config/passport");
 // Create Express server
@@ -117,5 +118,7 @@ app.post("/role/link/:idrole", passportConfig.isAuthenticated, roleController.po
 app.get("/permission/:id", passportConfig.isAuthenticated, permissionController.getPermission);
 app.post("/permission", passportConfig.isAuthenticated, permissionController.postPermission);
 app.get("/currentdev/:id", homeController.currentdev);
+app.get("/report", reportController.getIndex);
+app.post("/report", reportController.postExcel);
 module.exports = app;
 //# sourceMappingURL=app.js.map

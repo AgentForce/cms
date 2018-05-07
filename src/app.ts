@@ -18,8 +18,8 @@ const MongoStore = mongo(session);
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env.example" });
-console.log(process.env.MONGOLAB_URI);
-console.log("=======");
+// console.log(process.env.MONGOLAB_URI);
+// console.log("=======");
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
@@ -27,6 +27,7 @@ import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
 import * as roleController from "./controllers/role";
 import * as permissionController from "./controllers/permission";
+import * as reportController from "./controllers/report";
 // API keys and Passport configuration
 import * as passportConfig from "./config/passport";
 import { constants } from "fs";
@@ -124,5 +125,6 @@ app.post("/role/link/:idrole", passportConfig.isAuthenticated, roleController.po
 app.get("/permission/:id", passportConfig.isAuthenticated, permissionController.getPermission);
 app.post("/permission", passportConfig.isAuthenticated, permissionController.postPermission);
 app.get("/currentdev/:id", homeController.currentdev);
-
+app.get("/report", reportController.getIndex);
+app.post("/report", reportController.postExcel);
 module.exports = app;

@@ -1,0 +1,56 @@
+extends ./layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 Report
+        .panel.panel-widget
+          .tables
+            .well
+              h4 Export
+              .form-control-wrapper
+                form(action="", method="post")
+                  .row
+                    .col-xs-12.col-sm-5
+                      label(for="") Username
+                      .form-group.has-error.has-feedback
+                        input(type="text" name="key" class="form-control" placeholder="Key")
+                    .col-xs-12.col-sm-4
+                      label(for="") Type
+                      .form-group.has-success.has-feedback
+                        select(name="type" id="type" class="form-control1")
+                          option(value='') Tất cả người dùng
+                          option(value='1') Người dùng đã kích hoạt 
+                          option(value='2') Người dùng chưa kích hoạt
+                          option(value='level') Cấp con của user
+                  .row
+                    .col-xs-12.col-sm-5
+                      label(for="") From
+                      .form-group.has-error.has-feedback
+                        input(type="date" name="from" class="form-control" placeholder="Key")
+                    .col-xs-12.col-sm-4
+                      label(for="") To
+                      .form-group.has-error.has-feedback
+                        input(type="date" name="to" class="form-control" placeholder="Key")
+                    .col-xs-12.col-sm-3
+                      label(for="") 
+                      .form-group.has-error.has-feedback
+                        input(type="submit" value="Export Excel").btn.btn-primary
+        .panel.panel-widget
+          .tables
+            .well
+              h3 Kết Quả
+              br
+              .row
+                .col-xs-12.col-sm-5
+                  p
+                    h4 Điều kiện export
+                  p Date : 1/2/2018 - 1/3/2018
+                  p Username : ""
+                  p Type : Cấp con
+                .col-xs-12.col-sm-5
+                  p
+                    h4 Kết quả export
+                  p 50 users thỏa điều kiện

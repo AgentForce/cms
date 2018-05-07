@@ -499,6 +499,7 @@ export let postUpdatePassword = (req: Request, res: Response, next: NextFunction
   });
 };
 
+
 /**
  * POST /account/delete
  * Delete user account.
