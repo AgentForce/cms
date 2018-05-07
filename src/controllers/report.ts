@@ -136,10 +136,7 @@ export let postExcel = async (req: any, res: Response) => {
     phone: {
       displayName: "Phone",
       headerStyle: styles.headerDark,
-      cellFormat: function(value, row) { // <- Renderer function, you can access also any row.property
-        return (value == 1) ? "Active" : "Inactive";
-      },
-      width: "10" // <- width in chars (when the number is passed as string)
+      width: "50" // <- width in chars (when the number is passed as string)
     },
     address: {
       displayName: "Address",

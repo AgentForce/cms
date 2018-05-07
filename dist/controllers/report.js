@@ -137,10 +137,7 @@ exports.postExcel = (req, res) => __awaiter(this, void 0, void 0, function* () {
         phone: {
             displayName: "Phone",
             headerStyle: styles.headerDark,
-            cellFormat: function (value, row) {
-                return (value == 1) ? "Active" : "Inactive";
-            },
-            width: "10" // <- width in chars (when the number is passed as string)
+            width: "50" // <- width in chars (when the number is passed as string)
         },
         address: {
             displayName: "Address",
