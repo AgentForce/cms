@@ -52,211 +52,265 @@ export let getIndex = async (req: Request, res: Response) => {
 const excel = require("node-excel-export");
 
 export let postExcel = async (req: any, res: Response) => {
-  const styles = {
-    headerDark: {
-      fill: {
-        fgColor: {
-          rgb: "FF000000"
+  try {
+    req.assert("from", "From is not valid").notEmpty();
+    req.assert("to", "To is not valid").notEmpty();
+    const errors = req.validationErrors();
+    // console.log(errors);
+    if (errors) {
+      req.flash("errors", errors);
+      return res.redirect("/report");
+    }
+    const styles = {
+      headerDark: {
+        fill: {
+          fgColor: {
+            rgb: "FF000000"
+          }
+        },
+        font: {
+          color: {
+            rgb: "FFFFFFFF"
+          },
+          sz: 18,
+          bold: true,
+          underline: true
         }
       },
-      font: {
-        color: {
-          rgb: "FFFFFFFF"
+      header: {
+        font: {
+          color: {
+            rgb: "FF000000"
+          },
+          sz: 28,
+          bold: true,
+          vertAlign: true
         },
-        sz: 18,
-        bold: true,
-        underline: true
-      }
-    },
-    header: {
-      font: {
-        color: {
-          rgb: "FF000000"
-        },
-        sz: 28,
-        bold: true,
-        vertAlign: true
+        alignment: {
+          vertical: "center"
+        }
       },
-      alignment: {
-        vertical: "center"
-      }
-    },
-    cellPink: {
-      fill: {
-        fgColor: {
-          rgb: "FFFFCCFF"
+      cellPink: {
+        fill: {
+          fgColor: {
+            rgb: "FFFFCCFF"
+          }
+        }
+      },
+      cellGreen: {
+        fill: {
+          fgColor: {
+            rgb: "FF00FF00"
+          }
         }
       }
-    },
-    cellGreen: {
-      fill: {
-        fgColor: {
-          rgb: "FF00FF00"
+    };
+  
+    // Array of objects representing heading rows (very top)
+    let TypeExcel = "Tất cả người dùng";
+    if (req.body.type === "1")
+      TypeExcel = "Người dùng đã kích hoạt";
+    else if (req.body.type === "2")
+    TypeExcel = "Người dùng chưa kích hoạt";
+    else if (req.body.type === "level")
+      TypeExcel = "Cấp con của user";
+  
+    const heading = [
+      [{value: "Report " + req.body.from + " - " + req.body.to, style: styles.header}, {value: "b1", style: styles.headerDark}, {value: "c1", style: styles.headerDark}],
+      ["Username: " + req.body.key],
+      ["Type : " + TypeExcel] // <-- It can be only values
+    ];
+    // Here you specify the export structure
+    const specification = {
+      username: { // <- the key should match the actual data key
+        displayName: "Username", // <- Here you specify the column header
+        headerStyle: styles.headerDark, // <- Header style
+        // cellStyle: function(value, row) { // <- style renderer function
+          // if the status is 1 then color in green else color in red
+          // Notice how we use another cell value to style the current one
+          // return (row.status_id == 1) ? styles.cellGreen : {fill: {fgColor: {rgb: "FFFF0000"}}}; // <- Inline cell style is possible 
+        // },
+        width: 120 // <- width in pixels
+      },
+      fullName: {
+        displayName: "FullName",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 220 // <- width in pixels
+      },
+      email: {
+        displayName: "Email",
+        headerStyle: styles.headerDark,
+        width: 220 // <- width in pixels
+      },
+      scope: {
+        displayName: "Scope",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 70 // <- width in pixels
+      },
+      phone: {
+        displayName: "Phone",
+        headerStyle: styles.headerDark,
+        width: 50 // <- width in chars (when the number is passed as string)
+      },
+      address: {
+        displayName: "Address",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 220 // <- width in pixels
+      },
+      gender: {
+        displayName: "Gender",
+        headerStyle: styles.headerDark,
+        width: 30 // <- width in pixels
+      },
+      birthday: {
+        displayName: "Birthday",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 220 // <- width in pixels
+      },
+      code_level: {
+        displayName: "Code Level",
+        headerStyle: styles.headerDark,
+        width: 70 // <- width in pixels
+      },
+      status: {
+        displayName: "Status",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 30 // <- width in pixels
+      },
+      expirence: {
+        displayName: "Experience",
+        headerStyle: styles.headerDark,
+        width: 220 // <- width in pixels
+      },
+      zone: {
+        displayName: "Zone",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 20 // <- width in pixels
+      },
+      badge: {
+        displayName: "Badge",
+        headerStyle: styles.headerDark,
+        width: 120 // <- width in pixels
+      },
+      report_to_username: {
+        displayName: "Report To",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 120 // <- width in pixels
+      },
+      identity_card: {
+        displayName: "Identity Card",
+        headerStyle: styles.headerDark,
+        width: 120 // <- width in pixels
+      },
+      onboard_date: {
+        displayName: "Onboard Date",
+        headerStyle: styles.headerDark,
+        cellStyle: styles.cellPink, // <- Cell style
+        width: 120 // <- width in pixels
+      },
+      manager_badge: {
+        displayName: "Manager Badge",
+        headerStyle: styles.headerDark,
+        width: 70 // <- width in pixels
+      }
+    };
+    // The data set should have the following shape (Array of Objects)
+    // The order of the keys is irrelevant, it is also irrelevant if the
+    // dataset contains more fields as the report is build based on the
+    // specification provided above. But you should have all the fields
+    // that are listed in the report specification
+    const api = new BaseApi();
+    let dataApi: any;
+    // console.log(req.body);
+    dataApi = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/export", req.body);
+    const dataset = dataApi.resQ;
+    for (let index = 0; index < dataset.length; index++) {
+      const element = dataset[index];
+      if (dataset[index].gender == "1")
+        dataset[index].gender = "Male";
+      else
+        dataset[index].gender = "FeMale";
+      dataset[index].code_level = dataset[index].code_level + " - " + dataset[index].level;
+  
+      if (dataset[index].status == "1")
+        dataset[index].status = "Active";
+      else if (dataset[index].status == "0")
+        dataset[index].status = "OTP";
+      else dataset[index].status = "DeActive";
+  
+      if (dataset[index].badge == "1")
+        dataset[index].badge = "Đại lý thông thường";
+      else if (dataset[index].badge == "2")
+        dataset[index].badge = "MDRT";
+      else if (dataset[index].badge == "3")
+        dataset[index].badge = "COT";
+      else if (dataset[index].badge == "4")
+        dataset[index].badge = "TOT";
+      else if (dataset[index].badge == "5")
+        dataset[index].badge = "FC Bạc";
+      else if (dataset[index].badge == "6")
+        dataset[index].badge = "FC Vàng";
+      else if (dataset[index].badge == "7")
+        dataset[index].badge = "FC Kim Cương";
+  
+      if (dataset[index].manager_badge == "1")
+        dataset[index].manager_badge = "Quản lý thông thường";
+      else if (dataset[index].manager_badge == "2")
+        dataset[index].manager_badge = "MBA Bạc";
+      else if (dataset[index].manager_badge == "3")
+        dataset[index].manager_badge = "MBA Vàng";
+      else if (dataset[index].manager_badge == "4")
+        dataset[index].manager_badge = "MBA Kim Cương";
+    }
+  
+    /*const dataset = [
+      {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
+      {customer_name: "HP", status_id: 0, note: "some note"},
+      {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"},
+      {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
+      {customer_name: "HP", status_id: 0, note: "some note"},
+      {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"},
+      {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
+      {customer_name: "HP", status_id: 0, note: "some note"},
+      {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"}
+    ];*/
+    // Define an array of merges. 1-1 = A:1
+    // The merges are independent of the data.
+    // A merge will overwrite all data _not_ in the top-left cell.
+    const merges = [
+      { start: { row: 1, column: 1 }, end: { row: 1, column: 10 } },
+      { start: { row: 2, column: 1 }, end: { row: 2, column: 5 } },
+      { start: { row: 2, column: 6 }, end: { row: 2, column: 10 } }
+    ];
+    // Create the excel report.
+    // This function will return Buffer
+    const report = excel.buildExport(
+      [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
+        {
+          name: "Report", // <- Specify sheet name (optional)
+          heading: heading, // <- Raw heading array (optional)
+          merges: merges, // <- Merge cell ranges
+          specification: specification, // <- Report specification
+          data: dataset // <-- Report data
         }
-      }
-    }
-  };
-
-  // Array of objects representing heading rows (very top)
-  const heading = [
-    [{value: "Report 1/1/2018 - 1/2/2018", style: styles.header}, {value: "b1", style: styles.headerDark}, {value: "c1", style: styles.headerDark}],
-    ["Username: Null"],
-    ["Type : Full "] // <-- It can be only values
-  ];
-  // Here you specify the export structure
-  const specification = {
-    username: { // <- the key should match the actual data key
-      displayName: "Username", // <- Here you specify the column header
-      headerStyle: styles.headerDark, // <- Header style
-      // cellStyle: function(value, row) { // <- style renderer function
-        // if the status is 1 then color in green else color in red
-        // Notice how we use another cell value to style the current one
-        // return (row.status_id == 1) ? styles.cellGreen : {fill: {fgColor: {rgb: "FFFF0000"}}}; // <- Inline cell style is possible 
-      // },
-      width: 120 // <- width in pixels
-    },
-    fullName: {
-      displayName: "FullName",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    email: {
-      displayName: "Email",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    scope: {
-      displayName: "Scope",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    phone: {
-      displayName: "Phone",
-      headerStyle: styles.headerDark,
-      width: "50" // <- width in chars (when the number is passed as string)
-    },
-    address: {
-      displayName: "Address",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    gender: {
-      displayName: "Gender",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    birthday: {
-      displayName: "Birthday",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    code_level: {
-      displayName: "Code Level",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    status: {
-      displayName: "Status",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    experience: {
-      displayName: "Experience",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    zone: {
-      displayName: "Zone",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    badge: {
-      displayName: "Badge",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    report_to_username: {
-      displayName: "Report To",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    identity_card: {
-      displayName: "Identity Card",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    onboard_date: {
-      displayName: "Onboard Date",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    },
-    manager_badge: {
-      displayName: "Manager Badge",
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
-    }
-  };
-  // The data set should have the following shape (Array of Objects)
-  // The order of the keys is irrelevant, it is also irrelevant if the
-  // dataset contains more fields as the report is build based on the
-  // specification provided above. But you should have all the fields
-  // that are listed in the report specification
-  const api = new BaseApi();
-  let dataApi: any;
-  // console.log(req.body);
-  dataApi = await api.apiPostJson(req.user.access_token, process.env.DATA_OAUTH_URI + "api/export", req.body);
-  const dataset = dataApi.resQ;
-  /*const dataset = [
-    {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
-    {customer_name: "HP", status_id: 0, note: "some note"},
-    {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"},
-    {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
-    {customer_name: "HP", status_id: 0, note: "some note"},
-    {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"},
-    {customer_name: "IBM", status_id: 1, note: "some note", misc: "not shown"},
-    {customer_name: "HP", status_id: 0, note: "some note"},
-    {customer_name: "MS", status_id: 0, note: "some note", misc: "not shown"}
-  ];*/
-  // Define an array of merges. 1-1 = A:1
-  // The merges are independent of the data.
-  // A merge will overwrite all data _not_ in the top-left cell.
-  const merges = [
-    { start: { row: 1, column: 1 }, end: { row: 1, column: 10 } },
-    { start: { row: 2, column: 1 }, end: { row: 2, column: 5 } },
-    { start: { row: 2, column: 6 }, end: { row: 2, column: 10 } }
-  ];
-  // Create the excel report.
-  // This function will return Buffer
-  const report = excel.buildExport(
-    [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
-      {
-        name: "Report", // <- Specify sheet name (optional)
-        heading: heading, // <- Raw heading array (optional)
-        merges: merges, // <- Merge cell ranges
-        specification: specification, // <- Report specification
-        data: dataset // <-- Report data
-      }
-    ]
-  );
-  // You can then return this straight
-  res.attachment("report.xlsx"); // This is sails.js specific (in general you need to set headers)
-  /*res.render("report", {
-    title: "Account Management"
-  });*/
-  return res.send(report);
+      ]
+    );
+    // You can then return this straight
+    res.attachment("report.xlsx"); // This is sails.js specific (in general you need to set headers)
+    /*res.render("report", {
+      title: "Account Management"
+    });*/
+    return res.send(report);
+  } catch (error) {
+    const handler = new HandlerApi();
+    handler.handlerError(error);
+    return res.redirect("/report");
+  }
 };

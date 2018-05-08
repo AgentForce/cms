@@ -6,6 +6,7 @@ block content
       .grids
         .progressbar-heading.grids-heading
           h2 Report
+        include partials/flash
         .panel.panel-widget
           .tables
             .well
@@ -38,7 +39,7 @@ block content
                       label(for="") 
                       .form-group.has-error.has-feedback
                         input(type="submit" value="Export Excel").btn.btn-primary
-        .panel.panel-widget
+        .panel.panel-widget(style="display:none")
           .tables
             .well
               h3 Kết Quả
