@@ -27,6 +27,7 @@ const contactController = require("./controllers/contact");
 const roleController = require("./controllers/role");
 const permissionController = require("./controllers/permission");
 const reportController = require("./controllers/report");
+const remindController = require("./controllers/remind");
 // API keys and Passport configuration
 const passportConfig = require("./config/passport");
 // Create Express server
@@ -120,5 +121,6 @@ app.post("/permission", passportConfig.isAuthenticated, permissionController.pos
 app.get("/currentdev/:id", homeController.currentdev);
 app.get("/report", reportController.getIndex);
 app.post("/report", reportController.postExcel);
+app.get("/eleven-month", remindController.getIndex);
 module.exports = app;
 //# sourceMappingURL=app.js.map

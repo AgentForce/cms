@@ -37,7 +37,7 @@ export let getIndex = async (req: Request, res: Response) => {
     let res_api_full: any;
     res_api_full = await api.apiGet(req.user.access_token, process.env.DATA_OAUTH_URI + "api/users/1/2000");
     res.render("report", {
-      title: "Account Management",
+      title: "Report",
       users: res_api.data,
       usersCom: JSON.stringify(res_api_full.data),
       page: req.params.page - 0 ,

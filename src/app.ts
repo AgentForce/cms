@@ -28,6 +28,7 @@ import * as contactController from "./controllers/contact";
 import * as roleController from "./controllers/role";
 import * as permissionController from "./controllers/permission";
 import * as reportController from "./controllers/report";
+import * as remindController from "./controllers/remind";
 // API keys and Passport configuration
 import * as passportConfig from "./config/passport";
 import { constants } from "fs";
@@ -127,4 +128,6 @@ app.post("/permission", passportConfig.isAuthenticated, permissionController.pos
 app.get("/currentdev/:id", homeController.currentdev);
 app.get("/report", reportController.getIndex);
 app.post("/report", reportController.postExcel);
+app.get("/eleven-month", remindController.getIndex);
+
 module.exports = app;

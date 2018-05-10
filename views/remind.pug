@@ -1,0 +1,217 @@
+extends layout
+
+block content
+  div#page-wrapper
+    .main-page
+      .grids
+        .progressbar-heading.grids-heading
+          h2 Users
+        .panel.panel-widget
+            table.table.table-bordered
+              thead
+                tr.info
+                  th Login
+                  th Info
+                  th Role & Resource
+                  th Report To
+                  th Status
+                  th Action
+                for user in users
+                  tr
+                    td
+                      p= user.username
+                      p= user.phone
+                      div(id="myModal" + user.id class="modal fade" role="dialog")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button(type="button" class="close" data-dismiss="modal") &times;
+                              h4.modal-title Update Phone: 
+                                span= user.phone
+                            .modal-body
+                              form(action="/user/updatephone/" + user.id, method="post")
+                                label(for="phone") Thay đổi số điện thoại user phải send SMS OTP để xác nhận lại khi vào ứng dụng.
+                                .form-group
+                                  input(type="text" placeholder="New phone" name="phone" required="").form-control
+                                .form-group
+                                  input(type="hidden" value= user.username name="username" )
+                                .form-group
+                                  input(type="submit" value="Change").btn.btn-primary
+                                .modal-footer
+                                  button(type="button" class="btn btn-default" data-dismiss="modal") Close
+                    td
+                      p= user.fullName
+                      p= user.email
+                    td
+                      p= user.resource_ids
+                      p= user.scope
+                    td 
+                      p= "Report to " + user.report_to_username
+                      a(role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneReportTo" + user.id aria-expanded="true" aria-controls="collapseOne"  + user.id) Change Report To
+                      div(id="collapseOneReportTo" + user.id class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne")
+                        form(action="/user/uReport/" + user.id, method="post")
+                          .form-group
+                            input(type="text" placeholder="UserName" id=user.id name="des" style="height:35px; margin-top: 5px" required="")
+                            input(type="hidden" value= user.username name="src" )
+                            input(type="submit" value="Change" style="margin-top: -4px").btn.btn-primary
+                    td
+                      - if(user.status > 0)
+                        a(href="/user/changeStatus/" + user.username + "/" + user.status)
+                          i.fa.fa-download.mail-icon
+                          - if(user.status === 0 ) var info = 'OTP';
+                          - if(user.status === 1 ) var info = 'Active';
+                          - if(user.status === 2 ) var info = 'DeActive';
+                          span= info
+                      - else
+                        i.fa.fa-download.mail-icon
+                        span OTP
+                    td
+                      p
+                        a(href="/user/edit/" + user.username).hvr-float-shadow Edit Info
+                      p 
+                        button(type="button" class="btn btn-info" data-toggle="modal" data-target="#resetpass" + user.id) Reset Password
+                      div(id="resetpass" + user.id class="modal fade" role="dialog")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button(type="button" class="close" data-dismiss="modal") &times;
+                              h4.modal-title Reset Password: 
+                                span= user.username + " - " + user.fullName
+                            .modal-body
+                              form(action="/user/resetPass", method="post")
+                                label(for="phone") Reset mật khẩu user phải send SMS OTP để xác nhận lại khi vào ứng dụng.
+                                .form-group
+                                  span Bạn có chắc muốn reset mật khẩu không?
+                                .form-group
+                                  input(type="hidden" value= user.username name="username" )
+                                .modal-footer
+                                  input(type="submit" value="Reset").btn.btn-primary
+                                  button(type="button" class="btn btn-default" data-dismiss="modal") Close
+            nav
+              - var n = 1
+              ul.pagination.pagination
+                if page > 1
+                  li
+                    a(href="/eleven-month/" + page  aria-label="Previous")
+                      i.fa.fa-angle-left
+                while n < countpage + 1
+                  - var p = n++
+                  - var active = ""
+                  if page === p
+                    - active = "active"
+                  li(class = active)
+                    a(href="/eleven-month/" + p )= p
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+  script(type='text/javascript').
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+          });
+    }
+
+    /*An array containing all the country names in the world:*/
+    var countries = [];
+    /*for user in users
+    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+    // autocomplete(document.getElementById("960"), countries);
+    var projectData= '!{usersCom}';
+    projectData = JSON.parse(projectData)
+    // console.log(projectData.length);
+    // console.log(projectData);
+    for(var i=0; i< projectData.length ; i++){
+      // console.log(projectData[i].username);
+      countries[i] = projectData[i].username;
+      autocomplete(document.getElementById("" + projectData[i].id), countries);
+    }
