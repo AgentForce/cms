@@ -42,7 +42,6 @@ block content
                     tr.info
                       th Name & Description
                       th Resource
-                      th Action
                     for role in roles 
                       tr
                         td
@@ -53,7 +52,6 @@ block content
                             for child in role
                               span(style="margin-bottom:10px; margin-left:10px").btn.btn-default= child.name_scope + ' (' + child.scope + ')'
                         td= role[0].resource
-                        td Edit
               nav
               - var n = 1
               ul.pagination.pagination
