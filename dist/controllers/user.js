@@ -26,6 +26,11 @@ exports.getLogin = (req, res) => {
     if (req.user) {
         return res.redirect("/");
     }
+    /// api/count/tenAgency/:numweekFrom/:numweekTo
+    /* const api = new BaseApi();
+    const res_api = api.apiGet("req.user.access_token", "http://13.250.129.169:4500/api/count/tenAgency/17/22");
+    console.log("vao");
+    console.log(res_api);*/
     res.render("account/login", {
         title: "Login"
     });

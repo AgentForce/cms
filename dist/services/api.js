@@ -72,6 +72,9 @@ class BaseApi {
             };
             // const req = client.get(serverConfigs.apiOauth + 'api/uaa/oauth/check_token?token=' + token, args, function (data: any, response: any) {
             const req = client.get(api_name, args, function (data, response) {
+                console.log(api_name);
+                console.log(data);
+                console.log("API");
                 if (response.statusCode >= 200 && response.statusCode < 300)
                     fulfill(data);
                 else {

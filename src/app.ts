@@ -37,9 +37,14 @@ import { constants } from "fs";
 const app = express();
 
 // Connect to MongoDB
+const options = {
+  useMongoClient: true,
+  autoReconnect: true
+};
+
 const mongoUrl = process.env.MONGOLAB_URI;
 (<any>mongoose).Promise = bluebird;
-mongoose.connect(mongoUrl, {useMongoClient: true}).then(
+mongoose.connect(mongoUrl, options).then(
   () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
 ).catch(err => {
   console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);

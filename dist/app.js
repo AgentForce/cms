@@ -33,9 +33,13 @@ const passportConfig = require("./config/passport");
 // Create Express server
 const app = express();
 // Connect to MongoDB
+const options = {
+    useMongoClient: true,
+    autoReconnect: true
+};
 const mongoUrl = process.env.MONGOLAB_URI;
 mongoose.Promise = bluebird;
-mongoose.connect(mongoUrl, { useMongoClient: true }).then(() => { }).catch(err => {
+mongoose.connect(mongoUrl, options).then(() => { }).catch(err => {
     console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
     // process.exit();
 });
