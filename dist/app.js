@@ -10,10 +10,8 @@ const dotenv = require("dotenv");
 const mongo = require("connect-mongo");
 const flash = require("express-flash");
 const path = require("path");
-const mongoose = require("mongoose");
 const passport = require("passport");
 const expressValidator = require("express-validator");
-const bluebird = require("bluebird");
 const multer = require("multer");
 const MongoStore = mongo(session);
 // Load environment variables from .env file, where API keys and passwords are configured
@@ -33,16 +31,19 @@ const passportConfig = require("./config/passport");
 // Create Express server
 const app = express();
 // Connect to MongoDB
-const options = {
-    useMongoClient: true,
-    autoReconnect: true
+/*const options = {
+  useMongoClient: true,
+  autoReconnect: true
 };
+
 const mongoUrl = process.env.MONGOLAB_URI;
-mongoose.Promise = bluebird;
-mongoose.connect(mongoUrl, options).then(() => { }).catch(err => {
-    console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
-    // process.exit();
-});
+(<any>mongoose).Promise = bluebird;
+mongoose.connect(mongoUrl, options).then(
+  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined.  },
+).catch(err => {
+  console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
+  // process.exit();
+});*/
 // Express configuration
 app.set("port", process.env.PORT || 4200);
 app.set("views", path.join(__dirname, "../views"));
@@ -52,15 +53,15 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET,
-    store: new MongoStore({
-        url: mongoUrl,
-        autoReconnect: true
-    })
-}));
+/* app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+    url: mongoUrl,
+    autoReconnect: true
+  })
+}));*/
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
