@@ -60,6 +60,12 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: "KEKWIkdiwjf45",
+  cookie: {maxAge: 720000},
+}));
 /* app.use(session({
   resave: true,
   saveUninitialized: true,
