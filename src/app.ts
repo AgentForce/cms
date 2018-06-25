@@ -37,7 +37,7 @@ import { constants } from "fs";
 const app = express();
 
 // Connect to MongoDB
-const options = {
+/*const options = {
   useMongoClient: true,
   autoReconnect: true
 };
@@ -45,11 +45,11 @@ const options = {
 const mongoUrl = process.env.MONGOLAB_URI;
 (<any>mongoose).Promise = bluebird;
 mongoose.connect(mongoUrl, options).then(
-  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
+  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined.  },
 ).catch(err => {
   console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
   // process.exit();
-});
+});*/
 
 // Express configuration
 app.set("port", process.env.PORT || 4200);
@@ -60,7 +60,7 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
-app.use(session({
+/* app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
@@ -68,7 +68,7 @@ app.use(session({
     url: mongoUrl,
     autoReconnect: true
   })
-}));
+}));*/
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
